@@ -1030,9 +1030,6 @@ public class PropertyWare_OtherInformation
 					//temp=1;
 				}
 		
-		//Late Fee Rule
-		//OKC_InsertDataIntoPropertyWare.lateFeeRuleMethod(OKC_PropertyWare.lateFeeType);
-		LateFeeRule.lateFeeRule(PDFReader.getLateFeeRuleType(),driver);
 		
 		//Thread.sleep(2000);
 		js.executeScript("window.scrollTo(0,document.body.scrollHeight)");

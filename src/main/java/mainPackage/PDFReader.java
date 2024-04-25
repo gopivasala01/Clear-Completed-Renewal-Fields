@@ -9,15 +9,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import DataReader.ReadingLeaseAgreements;
-import PDFAppConfig.PDFFormatDecider;
 
 
 public class PDFReader 
 {
 	
 
-	
-	
 	private static ThreadLocal<String> prorateRentGETThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> lateFeeRuleTypeThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> lateChargeDayThreadLocal = new ThreadLocal<>();
@@ -313,24 +310,7 @@ public class PDFReader
 			System.out.println("1% of Pet Rent = "+RunnerClass.getOnePercentOfPetRentAmount());
 			System.out.println("1% of Prorate Pet Rent = "+RunnerClass.getOnePercentOfProratePetRentAmount());
 			
-			//Splitting RBP Amounts when it has taxes for only Montana
-		/*	if(RunnerClass.getResidentBenefitsPackageTaxAvailabilityCheck()==true&&company.equals("Montana"))
-			{
-				try
-				{
-					double a = Double.parseDouble(RunnerClass.getresidentBenefitsPackage().replace("$", "").trim());
-					double b = Double.parseDouble(RunnerClass.getResidentBenefitsPackageTaxAmount().replace("$", "").trim());
-					double c = a-b;
-					RunnerClass.setresidentBenefitsPackage(String.valueOf(c));
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-					RunnerClass.setresidentBenefitsPackage("Error");
-					RunnerClass.setResidentBenefitsPackageTaxAmount("Error");
-				}
-				
-			} */
+
 			
 			
 			//Calculating Prorate Resident Benefit Package if RBP amount is 49.95

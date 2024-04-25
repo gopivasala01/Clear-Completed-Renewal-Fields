@@ -239,7 +239,6 @@ public class RunnerClass {
 
 						if (PDFReader.readPDFPerMarket(company,SNo) == true) {
 							PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo);
-							PropertyWare_MoveInCharges.addMoveInCharges(driver,company,buildingAbbreviation,SNo);
 							PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
 							PropertyWare_OtherInformation.addOtherInformation(driver,company,buildingAbbreviation);
 
@@ -1364,7 +1363,6 @@ public class RunnerClass {
 
 			if (PDFReader.readPDFPerMarket(company,SNo) == true) {
 				PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo);
-				PropertyWare_MoveInCharges.addMoveInCharges(driver,company,buildingAbbreviation,SNo);
 				PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
 				PropertyWare_OtherInformation.addOtherInformation(driver,company,buildingAbbreviation);
 				

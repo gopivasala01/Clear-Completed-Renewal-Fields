@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openqa.selenium.TimeoutException;
 
-import PDFAppConfig.PDFFormatDecider;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import mainPackage.AppConfig;
 import mainPackage.PDFReader;
@@ -95,20 +94,7 @@ public class ReadingLeaseAgreements {
  		    text = text.trim().replaceAll(" +", " ");
  		    text = text.toLowerCase();
  		 
- 		   if(text.contains(format1Text.toLowerCase())||text.contains(PDFFormatDecider.format1.toLowerCase())||text.contains(PDFFormatDecider.format1_2.toLowerCase()))
-		    {
-		    	PDFFormatType = "Format1";
-		    	System.out.println("PDF Format Type  = "+PDFFormatType);
-		    	
-		    }
-		    
-		    else if(text.contains(format2Text.toLowerCase()))
-		    {
-		    	PDFFormatType = "Format2";
-		    	System.out.println("PDF Format Type = "+PDFFormatType);
-		    	
-		    }
-			RunnerClass.setPDFFormatType(PDFFormatType);
+ 		  
 		       
 		            
 			//File file = new File("C:\\SantoshMurthyP\\Lease Audit Automation\\Lease_02.22_02.23_200_Doc_Johns_Dr_ATX_Smith (3).pdf");
@@ -674,94 +660,7 @@ public class ReadingLeaseAgreements {
 				System.out.println("Error While Extracting Early Termination");
 			}
     		
-    		//RBP when Portfolio is ATX
-    	    
-    	    try
-    	    {
-    	    	if(RunnerClass.getPortfolioName().contains("ATX."))
-    	    	{
-    	    		if(text.contains(PDFAppConfig.Austin_Format1.residentBenefitsPackageAddendumCheck)&&!text.contains("Resident Benefits Package Opt-Out Addendum"))
-    	    	    {
-    	    	    	residentBenefitsPackageAvailabilityCheck = true;
-    	    	    	 try
-    	    	 	    {
-    	    	 		    residentBenefitsPackage = text.substring(text.indexOf(PDFAppConfig.Austin_Format1.RBPWhenPortfolioIsATX)+PDFAppConfig.Austin_Format1.RBPWhenPortfolioIsATX.length()).split(" ")[0].replaceAll("[^0-9a-zA-Z.]", "");
-                            if(residentBenefitsPackage.contains("month"))
-                            	residentBenefitsPackage = residentBenefitsPackage.substring(0,residentBenefitsPackage.indexOf("month")).trim();
-    	    	 		    if(residentBenefitsPackage.matches(".*[a-zA-Z]+.*"))
-    	    	 		    {
-    	    	 		    	residentBenefitsPackage = "Error";
-    	    	 		    }
-    	    	 	    }
-    	    	 	    catch(Exception e)
-    	    	 	    {
-    	    	 		    residentBenefitsPackage = "Error";
-    	    	 		    e.printStackTrace();
-    	    	 	    }
-    	    	    	System.out.println("Resident Benefits Packages  = "+residentBenefitsPackage.trim());
-    	    	    	RunnerClass.setresidentBenefitsPackageAvailabilityCheckFlag(residentBenefitsPackageAvailabilityCheck);
-    	    	    	RunnerClass.setresidentBenefitsPackage(residentBenefitsPackage);
-    	    	    	//PDFAppConfig.Austin_Format1.AB1_residentBenefitsPackage_Prior
-    	    	}
-    	    		// Check if Option 1 is selected in RBP Lease Agreement
-    	    		
-    	    		String optionValue = TessaractTest.pdfScreenShot(file,SNo);
-    	    		if(optionValue.equals("Option 1"))
-    	    		{
-    	    			captiveInsurenceATXFlag = true;
-    	    			RunnerClass.setCaptiveInsurenceATXFlag(captiveInsurenceATXFlag);
-    	    			 try
-    		    	 	    {
-    	    				 	captiveInsurenceATXFee = text.substring(text.indexOf(PDFAppConfig.Austin_Format1.captiveInsurenceATXFee_Prior.toLowerCase())+PDFAppConfig.Austin_Format1.captiveInsurenceATXFee_Prior.toLowerCase().length()).split(" ")[0].replaceAll("[^0-9a-zA-Z.]", "");
-    		    	 		   if(captiveInsurenceATXFee.contains("per")||captiveInsurenceATXFee.contains("Per"))
-    		    	 			   	captiveInsurenceATXFee = captiveInsurenceATXFee.trim().replace("per", "");
-    		    	 		    if(captiveInsurenceATXFee.matches(".*[a-zA-Z]+.*"))
-    		    	 		    {
-    		    	 		    	captiveInsurenceATXFee = "Error";
-    		    	 		    }
-    		    	 	    }
-    		    	 	    catch(Exception e)
-    		    	 	    {
-    		    	 	    	captiveInsurenceATXFee = "Error";
-    		    	 		    e.printStackTrace();
-    		    	 	    }
-    	    			 	RunnerClass.setCaptiveInsurenceATXFee(captiveInsurenceATXFee);
-    		    	    	System.out.println("Captive Insurence ATX Fee  = "+captiveInsurenceATXFee.trim());
-    	    		} 
-    	    		else {
-    	    			RunnerClass.setCaptiveInsurenceATXFlag(captiveInsurenceATXFlag);
-    	    		} 
-    	    		
-    	    	}
-    	    	else {
-    	    		RunnerClass.setCaptiveInsurenceATXFlag(captiveInsurenceATXFlag);
-    	    		RunnerClass.setCaptiveInsurenceATXFee(captiveInsurenceATXFee);
-    	    	}
-    	    } 
-    	    catch(Exception e)
-    	    {}
-    		
     	
-    		try {
-    			if(company.equalsIgnoreCase("Florida")) {
-       			 String optionValue1 = TessaractTest.floridaLiquidizedAddendumOptionCheck(file,SNo);
-       			 if(optionValue1.equals("Option 1"))
-       			    {
-       			    	floridaLiquidizedAddendumOption1Check =  true;
-       			    	RunnerClass.setEarlyTermination("two (2)");
-       			    	
-       			    }
-    			}
-   			RunnerClass.setFloridaLiquidizedAddendumOption1Check(floridaLiquidizedAddendumOption1Check);
-    		}
-    		catch(Exception e) {
-    			RunnerClass.setFloridaLiquidizedAddendumOption1Check(false);
-    			System.out.println("Error While Extracting Florida Liquidized Addendum Option1 Check");
-    		}
-			
-    	    
-			//Late Fee Rule
-    		LateFeeRuleTypeAssigner.lateFeeRule(text);
          
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
