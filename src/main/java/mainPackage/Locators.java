@@ -134,7 +134,9 @@ public class Locators
     
     public static By captiveInsurence = By.xpath("//*[text()='Captive Insurance']/following::select[1]");
     
-   
+    //Renewal Status
+    public static By renewalStatus = By.xpath("//th[text()='Renewal Status']//following::td[1]/select");
+    public static By priorMonthlyRent = By.xpath("//*[text()='Prior Monthly Rent']/following::input[1]");
 
 
 

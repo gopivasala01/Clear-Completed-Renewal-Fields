@@ -168,63 +168,7 @@ public class DataBase
 		}
 	}
 	
-	public static boolean getMoveInCharges(String buildingAbbreviation,String SNo)
-	{
-		try
-		{
-		        Connection con = null;
-		        Statement stmt = null;
-		        ResultSet rs = null;
-		            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		            con = DriverManager.getConnection(AppConfig.connectionUrl);
-		            String SQL = "Select ChargeCode, Amount, StartDate,EndDate,Description from automation.LeaseCloseOutsChargeChargesConfiguration_"+SNo+" Where MoveInCharge =1";
-		            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		           // stmt = con.createStatement();
-		            rs = stmt.executeQuery(SQL);
-		            int rows =0;
-		            if (rs.last()) {
-		            	rows = rs.getRow();
-		            	// Move to beginning
-		            	rs.beforeFirst();
-		            }
-		            System.out.println("Move In Charges = "+rows);
-		            String[][] moveInCharges = new String[rows][5];
-		           int  i=0;
-		            while(rs.next())
-		            {
-		            	
-		            	String 	chargeCode =  (String) rs.getObject(1);
-		                String  amount = (String) rs.getObject(2);
-		                String  startDate = (String) rs.getObject(3);
-		                String  endDate = (String) rs.getObject(4);
-		                String  description = (String) rs.getObject(5);
-		                
-		                System.out.println(chargeCode +" |  "+amount+" | "+startDate+" | "+endDate+" | "+description);
-		    				//Company
-		    				moveInCharges[i][0] = chargeCode;
-		    				//Building Abbreviation
-		    				moveInCharges[i][1] = amount;
-		    				//Monthly Rent From Lease Agreement
-		    				moveInCharges[i][2] = startDate;
-		    				//Monthly Rent In PW
-		    				moveInCharges[i][3] = endDate;
-		    				//Start Date From Lease Agreement
-		    				moveInCharges[i][4] = description;
-		    				i++;
-		            }	
-		         // Set the moveInCharges in RunnerClass
-		            RunnerClass.setMoveInCharges(moveInCharges);
-		            rs.close();
-		            stmt.close();
-		            con.close();
-		 return true;
-		}
-		catch(Exception e) 
-		{
-			e.printStackTrace();
-		 return false;
-		}
-	}
+
 	
 	public static boolean assignChargeCodes(String moveInChargesIDs, String autoChargesIDs,String buildingAbbreviation,String SNo)
 	{

@@ -354,48 +354,18 @@ public class RunnerClass {
 				setArizonaCityFromBuildingAddress(null);
 				setArizonaRentCode(null);
 				setArizonaCodeAvailable(false);
-				setPDFFormatType(null);
+				
 				setStatusID(0);
 				setPortfolioTypeForClientType(null);
-				PropertyWare_updateValues.setStartDate_MoveInCharge(null);
-				PropertyWare_updateValues.setEndDate_ProrateRent(null);
-				PropertyWare_updateValues.setstartDate_AutoCharge(null);
-				PropertyWare_updateValues.setautoCharge_startDate_MonthlyRent(null);  //For other portfolios, it should be added as second full month in Auto Charges 
-				PropertyWare_updateValues.setendDate_MonthlyRent_WhenIncreasedRentAvailable(null);
-				PropertyWare_updateValues.setCheckIfMoveInDateIsLessThan5DaysToEOM(false);
-				PropertyWare_updateValues.setPetInspectionFeeFlag(false);
-				PropertyWare_updateValues.setPetSecurityDepositFlag(false);
+				PropertyWare_updateValues.setOldLeaseStartDate_ProrateRent(null);
+				PropertyWare_updateValues.setOldLeaseEndDate_ProrateRent(null);
+				PropertyWare_updateValues.setNewLeaseEndDate_ProrateRent(null);
+				PropertyWare_updateValues.setProrateResidentBenefitPackage(null);  //For other portfolios, it should be added as second full month in Auto Charges 
 				PDFReader.setProrateRentGET(null);
-				PDFReader.setLateFeeRuleType(null);
-				PDFReader.setLateChargeDay(null);
-				PDFReader.setLateFeePercentage(null);
-				PDFReader.setLateFeeType(null);
-				PDFReader.setLateChargeFee(null);
-				PDFReader.setLateFeeChargePerDay(null);
-				setAdditionalLateChargesLimit(null);
-				PDFReader.setAdditionalLateCharges(null);
-				PDFReader.setRCDetails(null);
-				PropertyWare_OtherInformation.setType1(null);
-				PropertyWare_OtherInformation.setType2(null);
-				PropertyWare_OtherInformation.setType3(null);
-				//Breed
-				PropertyWare_OtherInformation.setBreed1(null);
-				PropertyWare_OtherInformation.setBreed2(null);
-				PropertyWare_OtherInformation.setBreed3(null);
-				//Weight
-				PropertyWare_OtherInformation.setWeight1(null);
-				PropertyWare_OtherInformation.setWeight2(null);
-				PropertyWare_OtherInformation.setWeight3(null);
 				
+	
 				
-				//Arraylist
-				setPetTypes(null);
-				setPetBreeds(null);
-				setPetWeights(null);
-				setServiceAnimalPetType(null);
-				setServiceAnimalPetBreeds(null);
-				setServiceAnimalPetWeights(null);
-				setMoveInCharges(null);
+			
 				setautoCharges(null);
 				try
 				{
@@ -1077,66 +1047,8 @@ public class RunnerClass {
 	}
 	
 	
-	//Array getter and setter methods
-    public static ArrayList<String> getPetTypes() {
-        return petTypeThreadLocal.get();
-    }
-	
-	public static void setPetTypes(ArrayList<String> petTypes) {
-        petTypeThreadLocal.set(petTypes);
-    }
-	
-	public static ArrayList<String> getPetBreeds() {
-        return petBreedThreadLocal.get();
-    }
-	
-	public static void setPetBreeds(ArrayList<String> petBreed) {
-		petBreedThreadLocal.set(petBreed);
-    }
 
-	public static ArrayList<String> getPetWeights() {
-        return petWeightThreadLocal.get();
-    }
 	
-	public static void setPetWeights(ArrayList<String> petWeight) {
-		petWeightThreadLocal.set(petWeight);
-    }
-	
-	public static ArrayList<String> getServiceAnimalPetType() {
-        return serviceAnimalPetTypeThreadLocal.get();
-    }
-	
-	public static void setServiceAnimalPetType(ArrayList<String> servicePetTypes) {
-		serviceAnimalPetTypeThreadLocal.set(servicePetTypes);
-    }
-	
-	public static ArrayList<String> getServiceAnimalPetBreeds() {
-        return serviceAnimalPetBreedThreadLocal.get();
-    }
-	
-	public static void setServiceAnimalPetBreeds(ArrayList<String> servicePetBreed) {
-		serviceAnimalPetBreedThreadLocal.set(servicePetBreed);
-    }
-	
-	public static ArrayList<String> getServiceAnimalPetWeights() {
-        return serviceAnimalPetWeightThreadLocal.get();
-    }
-	
-	public static void setServiceAnimalPetWeights(ArrayList<String> servicePetWeight) {
-		serviceAnimalPetWeightThreadLocal.set(servicePetWeight);
-    }
-	
-	
-	
-	  // Getter method for moveInCharges
-    public static String[][] getMoveInCharges() {
-        return moveInChargesThreadLocal.get();
-    }
-
-    // Setter method for moveInCharges
-    public static void setMoveInCharges(String[][] moveInCharges) {
-        moveInChargesThreadLocal.set(moveInCharges);
-    }
 	
     // Getter method for autoCharges
     public static String[][] getautoCharges() {
@@ -1427,6 +1339,21 @@ public class RunnerClass {
         return daysInMonth;
     }
 
+	 public static String dateMinusOneDay(String date) throws Exception {
+	    	try {
+	    		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		        LocalDate startDate = LocalDate.parse(date, formatter);
+		        LocalDate newDate = startDate.minusDays(1); // Subtract one day
+		        System.out.println("Date minus one day: " + newDate.format(formatter));
+				return newDate.format(formatter);
+	    	}
+	    	catch(Exception e) {
+	    		e.printStackTrace();
+	    		return "Error";
+	    	}
+	 }
+	
+	
 	public static boolean hasSpecialCharacters(String inputString) {
 		// Define a regular expression pattern to match characters other than digits,
 		// dots, and commas
