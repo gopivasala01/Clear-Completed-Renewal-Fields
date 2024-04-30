@@ -2,7 +2,7 @@ package mainPackage;
 
 public class AppConfig 
 {
-		public static boolean saveButtonOnAndOff= true;
+		public static boolean saveButtonOnAndOff= false;
 		public static String username= "mds0418@gmail.com";
 		public static String password="KRm#V39fecMDGg#";
 		public static String URL="https://app.propertyware.com/pw/login.jsp";
@@ -11,8 +11,8 @@ public class AppConfig
 		
 		public static String pdfImage = "C:\\SantoshMurthyP\\Tessaract Images\\";
 		
-		public static String test ="";
-	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName from Automation.RenewalProrationRentsUpdate where AutomationStatus = 'Pending'";
+	
+	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE()-2 AS DATE) and AutomationStatus = 'Pending'";
 			   //"Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Florida'  order by id asc";
 	   //public static String lastMonthLeases1 = "Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Alabama'  order by id asc";
 		//public static String lastMonthLeases = "Select  Company,buildingabbreviation,LeaseName from [Automation].[leaseAuditAutomation] where notes = 'Values did not match'";
@@ -20,7 +20,7 @@ public class AppConfig
 	    public static String downloadFilePath = "C:\\SantoshMurthyP\\Lease Audit Automation";
 	    public static String[] LeaseAgreementFileNames = {"RT Renewal Signed","RT-RENEWAL","RT - RENEWAL","RT_Full_Lease","Full Lease -","RENEWAL","renewal_","Renewal","Full_Lease","Full"};
 	    
-	    public static String buildingPageURL = "https://app.propertyware.com/pw/properties/building_detail.do?entityID=";
+	    public static String leasePageURL = "https://app.propertyware.com/pw/leases/lease_detail.do?entityID=";
 	    
 	    public static  String PDFFormatConfirmationText = "The parties to this lease are:";
 		public static  String PDFFormat2ConfirmationText = "THIS RESIDENTIAL LEASE AGREEMENT";
@@ -118,15 +118,15 @@ public class AppConfig
 		   case "Washington DC":
 			   return "40010 - Rent Income";
 		   case "Hawaii":
-			   if(RunnerClass.getMonthlyRentTaxFlag()==false)
+			   if(GetterAndSetterClass.getMonthlyRentTaxFlag()==false)
 			   return "40010 - Rent Income";
 			   else return "40061 - Rent - Kona";
 		   case "Arizona":
-			   if(RunnerClass.getArizonaCodeAvailable()==false&&RunnerClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
+			   if(GetterAndSetterClass.getArizonaCodeAvailable()==false&&GetterAndSetterClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
 				   return "40018 - Rent-PHX";
-			   else if(RunnerClass.getArizonaCodeAvailable()==false)
+			   else if(GetterAndSetterClass.getArizonaCodeAvailable()==false)
 			   return "40010 - Rent Income";
-			   else return RunnerClass.getArizonaRentCode();
+			   else return GetterAndSetterClass.getArizonaRentCode();
 		   case "New Jersey":
 			   return "40010 - Rent Income";
 		   case "Montana":
@@ -216,11 +216,11 @@ public class AppConfig
 		   case "Hawaii":
 			   return "40230 - Pet Rent";
 		   case "Arizona":
-			   if(RunnerClass.getArizonaCodeAvailable()==false&&RunnerClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
+			   if(GetterAndSetterClass.getArizonaCodeAvailable()==false&&GetterAndSetterClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
 				   return "40018 - Rent-PHX";
-			   else if(RunnerClass.getArizonaCodeAvailable()==false)
+			   else if(GetterAndSetterClass.getArizonaCodeAvailable()==false)
 			   return "40010 - Rent Income";
-			   else return RunnerClass.getArizonaRentCode();
+			   else return GetterAndSetterClass.getArizonaRentCode();
 		   case "New Jersey":
 			   return "40230 - Pet Rent";
 		   case "Montana":
@@ -397,15 +397,15 @@ public class AppConfig
 		   case "Washington DC":
 			   return "40010 - Rent Income";
 		   case "Hawaii":
-			   if(RunnerClass.getMonthlyRentTaxFlag()==false)
+			   if(GetterAndSetterClass.getMonthlyRentTaxFlag()==false)
 				   return "40010 - Rent Income";
 				   else return "40061 - Rent - Kona";
 		   case "Arizona":
-			   if(RunnerClass.getArizonaCodeAvailable()==false&&RunnerClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
+			   if(GetterAndSetterClass.getArizonaCodeAvailable()==false&&GetterAndSetterClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
 				   return "40018 - Rent-PHX";
-			   else if(RunnerClass.getArizonaCodeAvailable()==false)
+			   else if(GetterAndSetterClass.getArizonaCodeAvailable()==false)
 			   return "40010 - Rent Income";
-			   else return RunnerClass.getArizonaRentCode();
+			   else return GetterAndSetterClass.getArizonaRentCode();
 		   case "New Jersey":
 			   return "40010 - Rent Income";
 		   case "Montana":
@@ -497,11 +497,11 @@ public class AppConfig
 		   case "Hawaii":
 			   return "40230 - Pet Rent";
 		   case "Arizona":
-			   if(RunnerClass.getArizonaCodeAvailable()==false&&RunnerClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
+			   if(GetterAndSetterClass.getArizonaCodeAvailable()==false&&GetterAndSetterClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
 				   return "40018 - Rent-PHX";
-			   else if(RunnerClass.getArizonaCodeAvailable()==false)
+			   else if(GetterAndSetterClass.getArizonaCodeAvailable()==false)
 			   return "40010 - Rent Income";
-			   else return RunnerClass.getArizonaRentCode();
+			   else return GetterAndSetterClass.getArizonaRentCode();
 		   case "New Jersey":
 			   return "40230 - Pet Rent";
 		   case "Montana":
@@ -588,15 +588,15 @@ public class AppConfig
 		   case "Washington DC":
 			   return "40010 - Rent Income";
 		   case "Hawaii":
-			   if(RunnerClass.getMonthlyRentTaxFlag()==false)
+			   if(GetterAndSetterClass.getMonthlyRentTaxFlag()==false)
 				   return "40010 - Rent Income";
 				   else return "40061 - Rent - Kona";
 		   case "Arizona":
-			   if(RunnerClass.getArizonaCodeAvailable()==false&&RunnerClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
+			   if(GetterAndSetterClass.getArizonaCodeAvailable()==false&&GetterAndSetterClass.getArizonaCityFromBuildingAddress().contains("Phoenix"))
 				   return "40018 - Rent-PHX";
-			   else if(RunnerClass.getArizonaCodeAvailable()==false)
+			   else if(GetterAndSetterClass.getArizonaCodeAvailable()==false)
 			   return "40010 - Rent Income";
-			   else return RunnerClass.getArizonaRentCode();
+			   else return GetterAndSetterClass.getArizonaRentCode();
 		   case "New Jersey":
 			   return "40010 - Rent Income";
 		   case "Montana":

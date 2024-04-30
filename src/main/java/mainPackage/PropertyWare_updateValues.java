@@ -22,78 +22,11 @@ import DataReader.ReadingLeaseAgreements;
 public class PropertyWare_updateValues 
 {
 	
-	private static ThreadLocal<String> oldLeaseStartDate_ProrateRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> oldLeaseEndDate_ProrateRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> newLeaseEndDate_ProrateRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prorateResidentBenefitPackageThreadLocal = new ThreadLocal<>();  //For other portfolios, it should be added as second full month in Auto Charges 
-	private static ThreadLocal<String> prorateMonthlyRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> renewalStatusValueThreadLocal = new ThreadLocal<>();
+	
 
 	
 	
-	public static String getOldLeaseStartDate_ProrateRent() {
-		if(oldLeaseStartDate_ProrateRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return oldLeaseStartDate_ProrateRentThreadLocal.get();
-	}
-
-	public static void setOldLeaseStartDate_ProrateRent(String startDate) {
-		oldLeaseStartDate_ProrateRentThreadLocal.set(startDate);
-	}
 	
-	public static String getOldLeaseEndDate_ProrateRent() {
-		if(oldLeaseEndDate_ProrateRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return oldLeaseEndDate_ProrateRentThreadLocal.get();
-	}
-
-	public static void setOldLeaseEndDate_ProrateRent(String endDate) {
-		oldLeaseEndDate_ProrateRentThreadLocal.set(endDate);
-	}
-	
-	public static String getNewLeaseEndDate_ProrateRent() {
-		if(newLeaseEndDate_ProrateRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return newLeaseEndDate_ProrateRentThreadLocal.get();
-	}
-
-	public static void setNewLeaseEndDate_ProrateRent(String endDate) {
-		newLeaseEndDate_ProrateRentThreadLocal.set(endDate);
-	}
-	
-	public static String getProrateResidentBenefitPackage() {
-		if(prorateResidentBenefitPackageThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateResidentBenefitPackageThreadLocal.get();
-	}
-
-	public static void setProrateResidentBenefitPackage(String ProrateResidentBenefitPackage) {
-		prorateResidentBenefitPackageThreadLocal.set(ProrateResidentBenefitPackage);
-	}
-	public static String getProrateMonthlyRent() {
-		if(prorateMonthlyRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateMonthlyRentThreadLocal.get();
-	}
-
-	public static void setProrateMonthlyRent(String prorateMonthlyRent) {
-		prorateMonthlyRentThreadLocal.set(prorateMonthlyRent);
-	}
-	public static String getRenewalStatusValue() {
-		if(renewalStatusValueThreadLocal.get()==null)
-			return "Error";
-		else
-		 return renewalStatusValueThreadLocal.get();
-	}
-
-	public static void setRenewalStatusValue(String renewalStatusValue) {
-		renewalStatusValueThreadLocal.set(renewalStatusValue);
-	}
 
 	
 	
@@ -124,7 +57,7 @@ public class PropertyWare_updateValues
 			catch(Exception e) {}
 			
 			//Clear all values Configuration table first 
-			String query1 = "update  automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set set Amount = Null, StartDate= Null, EndDate= Null, Flag = Null";
+			String query1 = "update  automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Amount = Null, StartDate= Null, EndDate= Null, Flag = Null";
 			DataBase.updateTable(query1);
 			
 	
@@ -133,35 +66,41 @@ public class PropertyWare_updateValues
 			//Compare Start and end Dates in PW with Lease Agreement
 			try
 			{
-				if(RunnerClass.getStartDate().trim().equals(RunnerClass.getStartDateInPW().trim()))
+				if(GetterAndSetterClass.getStartDate().trim().equals(GetterAndSetterClass.getStartDateInPW().trim()))
 				System.out.println("Start is matched");
 				else 
 				{
 					System.out.println("Start is not matched");
 					failedReason = failedReason+",Start is not matched";
-					RunnerClass.setFailedReason(failedReason);
+					GetterAndSetterClass.setFailedReason(failedReason);
 				}
 				
-				if(RunnerClass.getEndDate().trim().equals(RunnerClass.getEndDateInPW().trim()))
+				if(GetterAndSetterClass.getEndDate().trim().equals(GetterAndSetterClass.getEndDateInPW().trim()))
 					System.out.println("End is matched");
 					else 
 					{
 						System.out.println("End is not matched");
 						failedReason = failedReason+",End is not matched";
-						RunnerClass.setFailedReason(failedReason);
+						GetterAndSetterClass.setFailedReason(failedReason);
 					}
 			}
 			catch(Exception e)
 			{}
 			
 			//Update dates as per Move and Auto Charges
-			PropertyWare_updateValues.updateDates(driver,company);
-			PropertyWare_updateValues.decideMoveInAndAutoCharges(company,buildingAbbreviation,SNo);
+			if(PropertyWare_updateValues.updateDates(driver,company) == false) {
+				return false;
+			}
 			PropertyWare_updateValues.addingValuesToTable(company,buildingAbbreviation,SNo);
+			if(PropertyWare_updateValues.decideMoveInAndAutoCharges(company,buildingAbbreviation,SNo) == false) {
+				return false;
+			}
+				
+			
 			return true;
 			}
 
-		public static void updateDates(WebDriver driver,String company) throws Exception
+		public static boolean updateDates(WebDriver driver,String company) throws Exception
 		{
 			
 			
@@ -172,9 +111,9 @@ public class PropertyWare_updateValues
 			JavascriptExecutor js = (JavascriptExecutor)driver;
 			
 			//Get all Required dates converted
-			String lastDayOfTheStartDate = RunnerClass.lastDateOfTheMonth(RunnerClass.getStartDate());
-			String firstFullMonth = RunnerClass.firstDayOfMonth(RunnerClass.getStartDate(),1);
-			String secondFullMonth = RunnerClass.firstDayOfMonth(RunnerClass.getStartDate(),2);
+			String lastDayOfTheStartDate = RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate());
+			String firstFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),1);
+			String secondFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),2);
 			
 			try {
 				driver.navigate().refresh();
@@ -187,14 +126,14 @@ public class PropertyWare_updateValues
 					Select select = new Select(driver.findElement(Locators.renewalStatus));
 				    // get selected option with getFirstSelectedOption() with its text
 					String seletedOption =select.getFirstSelectedOption().getText();
-					setRenewalStatusValue(seletedOption);
-					System.out.println("Renewal Status = "+getRenewalStatusValue());
+					GetterAndSetterClass.setRenewalStatusValue(seletedOption);
+					System.out.println("Renewal Status = "+GetterAndSetterClass.getRenewalStatusValue());
 				}
 				catch(Exception e) {
-					setRenewalStatusValue("Error");
+					GetterAndSetterClass.setRenewalStatusValue("Error");
 					//GenericMethods.logger.error("Issue in getting Renewal Status");
 					 failedReason = failedReason+","+ "Issue in getting Renewal Status";
-					 RunnerClass.setFailedReason(failedReason);
+					 GetterAndSetterClass.setFailedReason(failedReason);
 				   
 				     
 				}
@@ -208,23 +147,30 @@ public class PropertyWare_updateValues
 				priorMonthlyRent = "Error";
 				//GenericMethods.logger.error("Issue in getting prior monthly rent");
 				 failedReason = failedReason+","+ "Issue in getting prior monthly rent";
-				 RunnerClass.setFailedReason(failedReason);
+				 GetterAndSetterClass.setFailedReason(failedReason);
 			    // return false;
 			} 
 		
 
 			try {
+				if(GetterAndSetterClass.getStartDate().split("/")[1].equals("1")||GetterAndSetterClass.getStartDate().split("/")[1].equals("01"))
+			    {
+					return false;
+			    }
+				else
+				{
+					GetterAndSetterClass.setOldLeaseStartDate_ProrateRent(RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(), 0));
+					GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(RunnerClass.dateMinusOneDay(GetterAndSetterClass.getStartDate()));
+					GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate()));
+			    	
+					if(!GetterAndSetterClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
+						GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getresidentBenefitsPackage()));
+					}
+					if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
+						GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
+					}
+				}
 				
-				setOldLeaseStartDate_ProrateRent(RunnerClass.firstDayOfMonth(RunnerClass.getStartDate(), 0));
-				setOldLeaseEndDate_ProrateRent(RunnerClass.dateMinusOneDay(RunnerClass.getStartDate()));
-				setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(RunnerClass.getStartDate()));
-		    	
-				if(!RunnerClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
-					setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(RunnerClass.getresidentBenefitsPackage()));
-				}
-				if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
-					setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
-				}
 				
 				
 			}
@@ -232,20 +178,70 @@ public class PropertyWare_updateValues
 				e.printStackTrace();
 			}
 			
-	
+			return true;
 	
 		}
 		
 		public static boolean addingValuesToTable(String company,String buildingAbbreviation,String SNo)
 		{
+			String failedReason ="";
+			try {
+				
+				String query ="";
+				for(int i=1;i<=3;i++)
+				{
+					switch(i)
+					{
+					case 1:
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getResidentBenefitsPackageChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateResidentBenefitPackage()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=14";
+					    break;
+					case 2: 
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getProrateRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateRent()+"',StartDate='"+GetterAndSetterClass.getStartDate()+"',EndDate='"+GetterAndSetterClass.getNewLeaseEndDate_ProrateRent()+"',Flag = '' where ID=15";
+					    break;
+					case 3: 
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateMonthlyRent()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=16";
+					    break;
+					}
+					
+				}
+				DataBase.updateTable(query);
+				return true;
+			}
 			
-			return true;
+			catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("Issue in adding values to Auto charges table");
+				failedReason =  failedReason+","+"Internal Error - consolidating auto charges";
+				GetterAndSetterClass.setFailedReason(failedReason);
+				return false;
+
+			}
+			
 			
 		}
 		
-		public static void decideMoveInAndAutoCharges(String company,String buildingAbbreviation,String SNo)
+		public static boolean decideMoveInAndAutoCharges(String company,String buildingAbbreviation,String SNo)
 		{
-			
+			String failedReason ="";
+			String query1="";
+			if(GetterAndSetterClass.getRenewalStatusValue().toLowerCase().contains("charge renewal fee - annual")) {
+				if(!GetterAndSetterClass.getProrateRent().equalsIgnoreCase("Error")|| !GetterAndSetterClass.getProrateRent().equalsIgnoreCase("n/a") ||!GetterAndSetterClass.getProrateRent().equalsIgnoreCase("0.00")) {
+					if(GetterAndSetterClass.getresidentBenefitsPackageAvailabilityCheckFlag()==true) {
+						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14,15,16)";
+					}
+					else {
+						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (15,16)";
+					}
+					DataBase.updateTable(query1);
+				}
+			}
+			else {
+				System.out.println("Renewal Status is not charge renewal fee - annual");
+				failedReason =  failedReason+","+"Renewal Status is "+GetterAndSetterClass.getRenewalStatusValue();
+				GetterAndSetterClass.setFailedReason(failedReason);
+				return false;
+			}
+			return true;
 		}
 		
 		
@@ -268,10 +264,10 @@ public class PropertyWare_updateValues
 			for(int i=0;i<chargeCodes.size();i++)
 			{
 				String code = chargeCodes.get(i).getText();
-				if(code.contains(RunnerClass.getArizonaCityFromBuildingAddress()))
+				if(code.contains(GetterAndSetterClass.getArizonaCityFromBuildingAddress()))
 				{
-					RunnerClass.setArizonaRentCode(code);
-					RunnerClass.setArizonaCodeAvailable(true);
+					GetterAndSetterClass.setArizonaRentCode(code);
+					GetterAndSetterClass.setArizonaCodeAvailable(true);
 					break;
 					
 				}

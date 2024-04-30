@@ -32,6 +32,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import DataReader.ReadingLeaseAgreements;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class RunnerClass {
@@ -47,87 +48,8 @@ public class RunnerClass {
 	public static String currentTime;
 
 
-
-
-	
-	private static ThreadLocal<String> portfolioNameThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> portfolioTypeThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<ChromeDriver> driverThreadLocal = new ThreadLocal<ChromeDriver>();
-	private static ThreadLocal<String> failedReasonThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> fileNameThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> startDateThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> endDateThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> monthlyRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> monthlyRentTaxAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> monthlyRentTaxFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prorateRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prorateRentDateThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> adminFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> occupantsThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> residentBenefitsPackageAvailabilityCheckThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> HVACFilterFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> petFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> serviceAnimalFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> concessionAddendumFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> airFilterFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prepaymentChargeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> residentBenefitsPackageThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> proratedPetRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> petRentThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> totalPetRentWithTaxThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> petOneTimeNonRefundableFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> smartHomeAgreementCheckThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> smartHomeAgreementFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> earlyTerminationThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> totalMonthlyRentWithTaxThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> OnePercentOfRentAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> OnePercentOfProrateRentAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> OnePercentOfPetRentAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> OnePercentOfProratePetRentAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> residentBenefitsPackageTaxAvailabilityCheckThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> residentBenefitsPackageTaxAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> incrementRentFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> increasedRent_amountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> increasedRent_newStartDateThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> increasedRent_previousRentEndDateThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> petRentTaxFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prorateRUBSThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> rUBSThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> residentUtilityBillFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> captiveInsurenceATXFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> captiveInsurenceATXFlagThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> dueDay_GreaterOfThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> percentageThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> flatFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> initialFeeAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> perDayFeeAmountThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> additionalLateChargesLimitThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> dueDay_initialFeeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> startDateInPWThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> endDateInPWThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> petSecurityDepositThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> HVACFilterOptOutAddendumThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> RBPOptOutAddendumCheckThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> floridaLiquidizedAddendumOption1CheckThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> prorateResidentBenefitPackageThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> arizonaCityFromBuildingAddressThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> arizonaRentCodeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Boolean> arizonaCodeAvailableThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> PDFFormatTypeThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<Integer> statusIDThreadLocal = new ThreadLocal<>();
-	private static ThreadLocal<String> portfolioTypeForClientTypeThreadLocal   = new ThreadLocal<>();
-	
-	
-	private static ThreadLocal<ArrayList<String>> petTypeThreadLocal = ThreadLocal.withInitial(ArrayList::new);
-	private static ThreadLocal<ArrayList<String>> petBreedThreadLocal = ThreadLocal.withInitial(ArrayList::new);
-	private static ThreadLocal<ArrayList<String>> petWeightThreadLocal = ThreadLocal.withInitial(ArrayList::new);
-	
-	private static ThreadLocal<ArrayList<String>> serviceAnimalPetTypeThreadLocal = ThreadLocal.withInitial(ArrayList::new);
-	private static ThreadLocal<ArrayList<String>> serviceAnimalPetBreedThreadLocal = ThreadLocal.withInitial(ArrayList::new);
-	private static ThreadLocal<ArrayList<String>> serviceAnimalPetWeightThreadLocal = ThreadLocal.withInitial(ArrayList::new);
 
-	
-	private static ThreadLocal<String[][]> moveInChargesThreadLocal = ThreadLocal.withInitial(() -> new String[0][0]);
 	private static ThreadLocal<String[][]> autoChargesThreadLocal = ThreadLocal.withInitial(() -> new String[0][0]);
 	
 	@BeforeMethod
@@ -182,10 +104,10 @@ public class RunnerClass {
 	}
 
 	@Test(dataProvider = "testData")
-	public void testMethod(String SNo,String company, String buildingAbbreviation, String ownerName) throws Exception {
-		System.out.println(" Building -- " + buildingAbbreviation + "Company -- "+ company);
+	public void testMethod(String SNo,String company, String buildingAbbreviation, String ownerName,String LeaseEntityID) throws Exception {
+		System.out.println(" Building -- " + buildingAbbreviation + "  Company -- "+ company);
 		int statusID = 0;
-		setStatusID(statusID);
+		GetterAndSetterClass.setStatusID(statusID);
 		String failedReason = "";
 		String completeBuildingAbbreviation="";
 		ChromeDriver driver = driverThreadLocal.get();
@@ -213,7 +135,7 @@ public class RunnerClass {
 				|| company.contains("Montana") || company.contains("Delaware")) {
 			// Change the Status of the Lease to Started so that it won't run again in the
 			// Jenkins scheduling Process
-			DataBase.insertData(buildingAbbreviation, "Started", 6);
+			// DataBase.insertData(buildingAbbreviation, "Started", 6);
 			completeBuildingAbbreviation = buildingAbbreviation; // This will be used when Building not found in first
 																	// attempt
 			try {
@@ -232,57 +154,57 @@ public class RunnerClass {
 			// Login to the PropertyWare
 			try {
 				// Search building in property Ware
-				if (PropertyWare.selectBuilding(driver,company, ownerName) == true) {
+				if (PropertyWare.selectBuilding(driver,company, ownerName,LeaseEntityID) == true) {
 					RunnerClass.processAfterBuildingIsSelected(driver,SNo,company, buildingAbbreviation, ownerName,failedReason);
 				} else if ((PropertyWare.searchBuilding(driver,company, buildingAbbreviation,completeBuildingAbbreviation) == true)) {
 					if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName) == true) {
-
-						if (PDFReader.readPDFPerMarket(company,SNo) == true) {
-							PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo);
+							ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName());
+						if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
+							
 							PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
-							PropertyWare_OtherInformation.addOtherInformation(driver,company,buildingAbbreviation);
+							
 
 							// Update Completed Status
-							failedReason = getFailedReason();
+							failedReason = GetterAndSetterClass.getFailedReason();
 							if (failedReason == null || failedReason.equalsIgnoreCase(""))
 								failedReason = "";
 							else if (failedReason.charAt(0) == ',')
 								failedReason = failedReason.substring(1);
 							String updateSuccessStatus = "";
 							if (statusID == 0)
-								updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Completed', StatusID=4,NotAutomatedFields='"
-										+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+								updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
+										+ failedReason + "' where Building like '%"
 										+ buildingAbbreviation + "%'";
 							else
-								updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Review', StatusID=5,NotAutomatedFields='"
-										+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+								updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
+										+ failedReason + "' where Building like '%"
 										+ buildingAbbreviation + "%'";
 							DataBase.updateTable(updateSuccessStatus);
 
 						} else {
-							failedReason = getFailedReason();
+							failedReason = GetterAndSetterClass.getFailedReason();
 							if (failedReason == null || failedReason.equalsIgnoreCase(""))
 								failedReason = "";
 							else if (failedReason.charAt(0) == ',')
 								failedReason = failedReason.substring(1);
-							String updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Failed', StatusID=3,NotAutomatedFields='"
-									+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+							String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
+									+ failedReason + "' where Building like '%"
 									+ buildingAbbreviation + "%'";
 							DataBase.updateTable(updateSuccessStatus);
 
 						}
 
 					} else {
-						if (PropertyWare.selectBuilding(driver,company, completeBuildingAbbreviation) == true) {
+						if (PropertyWare.selectBuilding(driver,company, completeBuildingAbbreviation,LeaseEntityID) == true) {
 							RunnerClass.processAfterBuildingIsSelected(driver,SNo,company, buildingAbbreviation, ownerName,failedReason);
 						} else {
-							failedReason = getFailedReason();
+							failedReason = GetterAndSetterClass.getFailedReason();
 							if (failedReason == null || failedReason.equalsIgnoreCase(""))
 								failedReason = "";
 							else if (failedReason.charAt(0) == ',')
 								failedReason = failedReason.substring(1);
-							String updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Failed', StatusID=3,NotAutomatedFields='"
-									+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+							String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
+									+ failedReason + "' where Building like '%"
 									+ buildingAbbreviation + "%'";
 							DataBase.updateTable(updateSuccessStatus);
 						}
@@ -292,76 +214,32 @@ public class RunnerClass {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				setFailedReason(null);
-				setFileName(null);
-				setStartDate(null);
-				setEndDate(null);
-				setMonthlyRent(null);
-				setMonthlyRentTaxAmount(null);
-				setOccupants(null);
-				setMonthlyRentTaxFlag(false);
-				setresidentBenefitsPackageAvailabilityCheckFlag(false);
-				setHVACFilterFlag(false);
-				setpetFlag(false);
-				setserviceAnimalFlag(false);
-				setconcessionAddendumFlag(false);
-				setAdminFee(null);
-				setProrateRent(null);
-				setProrateRentDate(null);
-				setairFilterFee(null);
-				setprepaymentCharge(null);
-				setresidentBenefitsPackage(null);
-				setproratedPetRent(null);
-				setPetRent(null);
-				setTotalPetRentWithTax(null);
-				setPetOneTimeNonRefundableFee(null);
-				setSmartHomeAgreementCheck(false);
-				setSmartHomeAgreementFee(null);
-				setEarlyTermination(null);
-				setTotalMonthlyRentWithTax(null);
-				setOnePercentOfRentAmount(null);
-				setOnePercentOfProrateRentAmount(null);
-				setOnePercentOfPetRentAmount(null);
-				setOnePercentOfProratePetRentAmount(null);
-				setResidentBenefitsPackageTaxAvailabilityCheck(false);
-				setResidentBenefitsPackageTaxAmount(null);
-				setPortfolioName(null);
-				setPortfolioType(null);
-				setIncrementRentFlag(false);
-				setIncreasedRent_amount(null);
-				setIncreasedRent_newStartDate(null);
-				setPetRentTaxFlag(false);
-				setProrateRUBS(null);
-				setResidentUtilityBillFlag(false);
-				setRUBS(null);
-				setIncreasedRent_previousRentEndDate(null);
-				setCaptiveInsurenceATXFee(null);
-				setCaptiveInsurenceATXFlag(false);
+				GetterAndSetterClass.setFailedReason(null);
+				GetterAndSetterClass.setFileName(null);
+				GetterAndSetterClass.setStartDate(null);
+				GetterAndSetterClass.setEndDate(null);
+				GetterAndSetterClass.setMonthlyRent(null);
+				GetterAndSetterClass.setMonthlyRentTaxAmount(null);
+				GetterAndSetterClass.setMonthlyRentTaxFlag(false);
+				GetterAndSetterClass.setresidentBenefitsPackageAvailabilityCheckFlag(false);
+				GetterAndSetterClass.setProrateRent(null);
+				GetterAndSetterClass.setProrateRentDate(null);
+				GetterAndSetterClass.setresidentBenefitsPackage(null);
+				GetterAndSetterClass.setTotalMonthlyRentWithTax(null);
+				GetterAndSetterClass.setResidentBenefitsPackageTaxAvailabilityCheck(false);
+				GetterAndSetterClass.setResidentBenefitsPackageTaxAmount(null);
+				GetterAndSetterClass.setStartDateInPW(null);
+				GetterAndSetterClass.setEndDateInPW(null);
+				GetterAndSetterClass.setRBPOptOutAddendumCheck(false);
+				GetterAndSetterClass.setArizonaCityFromBuildingAddress(null);
+				GetterAndSetterClass.setArizonaRentCode(null);
+				GetterAndSetterClass.setArizonaCodeAvailable(false);
+				GetterAndSetterClass.setStatusID(0);
+				GetterAndSetterClass.setOldLeaseStartDate_ProrateRent(null);
+				GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(null);
+				GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(null);
+				GetterAndSetterClass.setProrateResidentBenefitPackage(null);  //For other portfolios, it should be added as second full month in Auto Charges 
 				
-				setPercentage(null);
-				setFlatFee(null);
-				setInitialFeeAmount(null);
-				setPerDayFeeAmount(null);
-				setAdditionalLateChargesLimit(null);
-				setDueDay_initialFee(null);
-				setStartDateInPW(null);
-				setEndDateInPW(null);
-				setPetSecurityDeposit(null);
-				setHVACFilterOptOutAddendum(false);
-				setRBPOptOutAddendumCheck(false);
-				setFloridaLiquidizedAddendumOption1Check(false);
-				setProrateResidentBenefitPackage(null);
-				setArizonaCityFromBuildingAddress(null);
-				setArizonaRentCode(null);
-				setArizonaCodeAvailable(false);
-				
-				setStatusID(0);
-				setPortfolioTypeForClientType(null);
-				PropertyWare_updateValues.setOldLeaseStartDate_ProrateRent(null);
-				PropertyWare_updateValues.setOldLeaseEndDate_ProrateRent(null);
-				PropertyWare_updateValues.setNewLeaseEndDate_ProrateRent(null);
-				PropertyWare_updateValues.setProrateResidentBenefitPackage(null);  //For other portfolios, it should be added as second full month in Auto Charges 
-				PDFReader.setProrateRentGET(null);
 				
 	
 				
@@ -369,8 +247,7 @@ public class RunnerClass {
 				setautoCharges(null);
 				try
 				{
-				String query = "drop table if exists automation.LeaseCloseOutsChargeChargesConfiguration_"
-						+ SNo;
+				String query = "drop table if exists automation.LeaseReneWalsAutoChargesConfiguration_"+SNo;
 				DataBase.updateTable(query);
 				}
 				catch(Exception e) {}
@@ -379,675 +256,6 @@ public class RunnerClass {
 		}
 
 	}
-	
-	public static String getFailedReason() {
-		if(failedReasonThreadLocal.get()==null)
-			return "";
-			else return failedReasonThreadLocal.get();
-	}
-
-	public static void setFailedReason(String failedReason) {
-		failedReasonThreadLocal.set(failedReason);
-	}
-	
-	public static String getFileName() {
-		 return fileNameThreadLocal.get();
-	}
-
-	public static void setFileName(String failedReason) {
-		fileNameThreadLocal.set(failedReason);
-	}
-	
-	public static String getStartDate() {
-		if(startDateThreadLocal.get()==null)
-			return "Error";
-		else
-		 return startDateThreadLocal.get();
-	}
-
-	public static void setStartDate(String startDate) {
-		startDateThreadLocal.set(startDate);
-	}
-	
-	public static String getEndDate() {
-		if(endDateThreadLocal.get()==null)
-			return "Error";
-		else
-		 return endDateThreadLocal.get();
-	}
-
-	public static void setEndDate(String endDate) {
-		endDateThreadLocal.set(endDate);
-	}
-	
-	public static String getMonthlyRent() {
-		if(monthlyRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return monthlyRentThreadLocal.get();
-	}
-
-	public static void setMonthlyRent(String monthlyRent) {
-		monthlyRentThreadLocal.set(monthlyRent);
-	}
-	public static String getMonthlyRentTaxAmount() {
-		if(monthlyRentTaxAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return monthlyRentTaxAmountThreadLocal.get();
-	}
-
-	public static void setMonthlyRentTaxAmount(String monthlyRentTaxAmount) {
-		monthlyRentTaxAmountThreadLocal.set(monthlyRentTaxAmount);
-	}
-	public static String getOccupants() {
-		if(occupantsThreadLocal.get()==null)
-			return "Error";
-		else
-		 return occupantsThreadLocal.get();
-	}
-
-	public static void setOccupants(String occupants) {
-		occupantsThreadLocal.set(occupants);
-	}
-	
-	public static boolean getMonthlyRentTaxFlag() {
-		if(monthlyRentTaxFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return monthlyRentTaxFlagThreadLocal.get();
-	}
-
-	public static void setMonthlyRentTaxFlag(boolean monthlyRentTaxFlag) {
-		monthlyRentTaxFlagThreadLocal.set(monthlyRentTaxFlag);
-	}
-	
-	public static boolean getresidentBenefitsPackageAvailabilityCheckFlag() {
-		if(residentBenefitsPackageAvailabilityCheckThreadLocal.get()==null)
-			return false;
-		else
-		 return residentBenefitsPackageAvailabilityCheckThreadLocal.get();
-	}
-
-	public static void setresidentBenefitsPackageAvailabilityCheckFlag(boolean residentBenefitsPackageAvailabilityCheckFlag) {
-		residentBenefitsPackageAvailabilityCheckThreadLocal.set(residentBenefitsPackageAvailabilityCheckFlag);
-	}
-	public static boolean getHVACFilterFlag() {
-		if(HVACFilterFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return HVACFilterFlagThreadLocal.get();
-	}
-
-	public static void setHVACFilterFlag(boolean HVACFilterFlag) {
-		HVACFilterFlagThreadLocal.set(HVACFilterFlag);
-	}
-	
-	public static boolean getpetFlag() {
-		if(petFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return petFlagThreadLocal.get();
-	}
-
-	public static void setpetFlag(boolean petFlag) {
-		petFlagThreadLocal.set(petFlag);
-	}
-	
-	public static boolean getserviceAnimalFlag() {
-		if(serviceAnimalFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return serviceAnimalFlagThreadLocal.get();
-	}
-
-	public static void setserviceAnimalFlag(boolean serviceAnimalFlag) {
-		serviceAnimalFlagThreadLocal.set(serviceAnimalFlag);
-	}
-	
-	public static boolean getconcessionAddendumFlag() {
-		if(concessionAddendumFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return concessionAddendumFlagThreadLocal.get();
-	}
-
-	public static void setconcessionAddendumFlag(boolean concessionAddendumFlag) {
-		concessionAddendumFlagThreadLocal.set(concessionAddendumFlag);
-	}
-	
-	
-		
-	public static String getAdminFee() {
-		if(adminFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return adminFeeThreadLocal.get();
-	}
-	
-	public static void setAdminFee(String adminFee) {
-		adminFeeThreadLocal.set(adminFee);
-	}
-	
-	public static String getProrateRent() {
-		if(prorateRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateRentThreadLocal.get();
-	}
-
-	public static void setProrateRent(String prorateRent) {
-		prorateRentThreadLocal.set(prorateRent);
-	}
-	
-	public static String getProrateRentDate() {
-		if(prorateRentDateThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateRentDateThreadLocal.get();
-	}
-
-	public static void setProrateRentDate(String prorateRentDate) {
-		prorateRentDateThreadLocal.set(prorateRentDate);
-	}
-	public static String getairFilterFee() {
-		if(airFilterFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return airFilterFeeThreadLocal.get();
-	}
-
-	public static void setairFilterFee(String airFilterFee) {
-		airFilterFeeThreadLocal.set(airFilterFee);
-	}
-	public static String getprepaymentCharge() {
-		if(prepaymentChargeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prepaymentChargeThreadLocal.get();
-	}
-
-	public static void setprepaymentCharge(String prepaymentCharge) {
-		prepaymentChargeThreadLocal.set(prepaymentCharge);
-	}
-	
-	public static String getresidentBenefitsPackage() {
-		if(residentBenefitsPackageThreadLocal.get()==null)
-			return "Error";
-		else
-		 return residentBenefitsPackageThreadLocal.get();
-	}
-
-	public static void setresidentBenefitsPackage(String residentBenefitsPackage) {
-		residentBenefitsPackageThreadLocal.set(residentBenefitsPackage);
-	}
-	
-	public static void setproratedPetRent(String proratedPetRent) {
-		proratedPetRentThreadLocal.set(proratedPetRent);
-	}
-	
-	public static String getproratedPetRent() {
-		if(proratedPetRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return proratedPetRentThreadLocal.get();
-	}
-	
-	public static void setPetRent(String petRent) {
-		petRentThreadLocal.set(petRent);
-	}
-	
-	public static String getPetRent() {
-		if(petRentThreadLocal.get()==null)
-			return "Error";
-		else
-		 return petRentThreadLocal.get();
-	}
-	public static void setTotalPetRentWithTax(String totalPetRentWithTax) {
-		totalPetRentWithTaxThreadLocal.set(totalPetRentWithTax);
-	}
-	
-	public static String getTotalPetRentWithTax() {
-		if(totalPetRentWithTaxThreadLocal.get()==null)
-			return "Error";
-		else
-		 return totalPetRentWithTaxThreadLocal.get();
-	}
-	public static void setPetOneTimeNonRefundableFee(String petOneTimeNonRefundableFee) {
-		petOneTimeNonRefundableFeeThreadLocal.set(petOneTimeNonRefundableFee);
-	}
-	
-	public static String getPetOneTimeNonRefundableFee() {
-		if(petOneTimeNonRefundableFeeThreadLocal.get()==null)
-		return "Error";
-		else
-		 return petOneTimeNonRefundableFeeThreadLocal.get();
-	}
-	public static void setSmartHomeAgreementCheck(boolean smartHomeAgreementCheck) {
-		smartHomeAgreementCheckThreadLocal.set(smartHomeAgreementCheck);
-	}
-	
-	public static boolean getSmartHomeAgreementCheck() {
-		if(smartHomeAgreementCheckThreadLocal.get()==null)
-			return false;
-		else
-		 return smartHomeAgreementCheckThreadLocal.get();
-	}
-	public static void setSmartHomeAgreementFee(String smartHomeAgreementFee) {
-		smartHomeAgreementFeeThreadLocal.set(smartHomeAgreementFee);
-	}
-	
-	public static String getSmartHomeAgreementFee() {
-		if(smartHomeAgreementFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return smartHomeAgreementFeeThreadLocal.get();
-	}
-	public static void setEarlyTermination(String earlyTermination) {
-		earlyTerminationThreadLocal.set(earlyTermination);
-	}
-	
-	public static String getEarlyTermination() {
-		if(earlyTerminationThreadLocal.get()==null)
-			return "Error";
-		else
-		 return earlyTerminationThreadLocal.get();
-	}
-	public static void setTotalMonthlyRentWithTax(String totalMonthlyRentWithTax) {
-		totalMonthlyRentWithTaxThreadLocal.set(totalMonthlyRentWithTax);
-	}
-	
-	public static String getTotalMonthlyRentWithTax() {
-		if(totalMonthlyRentWithTaxThreadLocal.get()==null)
-			return "Error";
-		else
-		 return totalMonthlyRentWithTaxThreadLocal.get();
-	}
-	public static void setOnePercentOfRentAmount(String onePercentOfRentAmount) {
-		OnePercentOfRentAmountThreadLocal.set(onePercentOfRentAmount);
-	}
-	
-	public static String getOnePercentOfRentAmount() {
-		if(OnePercentOfRentAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return OnePercentOfRentAmountThreadLocal.get();
-	}
-	public static void setOnePercentOfProrateRentAmount(String onePercentOfProrateRentAmount) {
-		OnePercentOfProrateRentAmountThreadLocal.set(onePercentOfProrateRentAmount);
-	}
-	
-	public static String getOnePercentOfProrateRentAmount() {
-		if(OnePercentOfProrateRentAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return OnePercentOfProrateRentAmountThreadLocal.get();
-	}
-	public static void setOnePercentOfPetRentAmount(String OnePercentOfPetRentAmount) {
-		OnePercentOfPetRentAmountThreadLocal.set(OnePercentOfPetRentAmount);
-	}
-	
-	public static String getOnePercentOfPetRentAmount() {
-		if(OnePercentOfPetRentAmountThreadLocal.get()==null)
-			return "Error";
-		 return OnePercentOfPetRentAmountThreadLocal.get();
-	}
-	public static void setOnePercentOfProratePetRentAmount(String OnePercentOfProratePetRentAmount) {
-		OnePercentOfProratePetRentAmountThreadLocal.set(OnePercentOfProratePetRentAmount);
-	}
-	
-	public static String getOnePercentOfProratePetRentAmount() {
-		if(OnePercentOfProratePetRentAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return OnePercentOfProratePetRentAmountThreadLocal.get();
-	}
-	
-	public static boolean getResidentBenefitsPackageTaxAvailabilityCheck() {
-		if(residentBenefitsPackageTaxAvailabilityCheckThreadLocal.get()==null)
-			return false;
-		else
-		 return residentBenefitsPackageTaxAvailabilityCheckThreadLocal.get();
-	}
-	public static void setResidentBenefitsPackageTaxAvailabilityCheck(boolean ResidentBenefitsPackageTaxAvailabilityCheck) {
-		residentBenefitsPackageTaxAvailabilityCheckThreadLocal.set(ResidentBenefitsPackageTaxAvailabilityCheck);
-	}
-	
-	public static void setResidentBenefitsPackageTaxAmount(String residentBenefitsPackageTaxAmount) {
-		residentBenefitsPackageTaxAmountThreadLocal.set(residentBenefitsPackageTaxAmount);
-	}
-	
-	public static String getResidentBenefitsPackageTaxAmount() {
-		if(residentBenefitsPackageTaxAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return residentBenefitsPackageTaxAmountThreadLocal.get();
-	}
-	public static void setPortfolioName(String portfolioName) {
-		portfolioNameThreadLocal.set(portfolioName);
-	}
-	
-	public static String getPortfolioName() {
-		if(portfolioNameThreadLocal.get()==null)
-			return "Error";
-		else
-		 return portfolioNameThreadLocal.get();
-	}
-	public static void setPortfolioType(String portfolioType) {
-		portfolioTypeThreadLocal.set(portfolioType);
-	}
-	
-	public static String getPortfolioType() {
-		if(portfolioTypeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return portfolioTypeThreadLocal.get();
-	}
-	public static boolean getIncrementRentFlag() {
-		if(incrementRentFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return incrementRentFlagThreadLocal.get();
-	}
-	public static void setIncrementRentFlag(boolean incrementRentFlag) {
-		incrementRentFlagThreadLocal.set(incrementRentFlag);
-	}
-	public static void setIncreasedRent_amount(String increasedRent_amount) {
-		increasedRent_amountThreadLocal.set(increasedRent_amount);
-	}
-	
-	public static String getIncreasedRent_amount() {
-		if(increasedRent_amountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return increasedRent_amountThreadLocal.get();
-	}
-	
-	public static void setIncreasedRent_newStartDate(String increasedRent_newStartDate) {
-		increasedRent_newStartDateThreadLocal.set(increasedRent_newStartDate);
-	}
-	
-	public static String getIncreasedRent_newStartDate() {
-		if(increasedRent_newStartDateThreadLocal.get()==null)
-			return "Error";
-		else
-		 return increasedRent_newStartDateThreadLocal.get();
-	}
-	public static boolean getPetRentTaxFlag() {
-		if(petRentTaxFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return petRentTaxFlagThreadLocal.get();
-	}
-	public static void setPetRentTaxFlag(boolean petRentTaxFlag) {
-		petRentTaxFlagThreadLocal.set(petRentTaxFlag);
-	}
-	
-	public static void setProrateRUBS(String prorateRUBS) {
-		prorateRUBSThreadLocal.set(prorateRUBS);
-	}
-	
-	public static String getProrateRUBS() {
-		if(prorateRUBSThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateRUBSThreadLocal.get();
-	}
-	
-	public static boolean getResidentUtilityBillFlag() {
-		if(residentUtilityBillFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return residentUtilityBillFlagThreadLocal.get();
-	}
-	public static void setResidentUtilityBillFlag(boolean residentUtilityBillFlag) {
-		residentUtilityBillFlagThreadLocal.set(residentUtilityBillFlag);
-	}
-	
-	public static void setRUBS(String RUBS) {
-		rUBSThreadLocal.set(RUBS);
-	}
-	
-	public static String getRUBS() {
-		if(rUBSThreadLocal.get()==null)
-			return "Error";
-		else
-		 return rUBSThreadLocal.get();
-	}
-	
-	public static void setIncreasedRent_previousRentEndDate(String increasedRent_previousRentEndDate) {
-		increasedRent_previousRentEndDateThreadLocal.set(increasedRent_previousRentEndDate);
-	}
-	
-	public static String getIncreasedRent_previousRentEndDate() {
-		if(increasedRent_previousRentEndDateThreadLocal.get()==null)
-			return "Error";
-		else
-		 return increasedRent_previousRentEndDateThreadLocal.get();
-	}
-	public static void setCaptiveInsurenceATXFee(String captiveInsurenceATXFee) {
-		captiveInsurenceATXFeeThreadLocal.set(captiveInsurenceATXFee);
-	}
-	
-	public static String getCaptiveInsurenceATXFeeThreadLocal() {
-		if(captiveInsurenceATXFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return captiveInsurenceATXFeeThreadLocal.get();
-	}
-	
-	public static boolean getCaptiveInsurenceATXFlag() {
-		if(captiveInsurenceATXFlagThreadLocal.get()==null)
-			return false;
-		else
-		 return captiveInsurenceATXFlagThreadLocal.get();
-	}
-	public static void setCaptiveInsurenceATXFlag(boolean captiveInsurenceATXFlag) {
-		captiveInsurenceATXFlagThreadLocal.set(captiveInsurenceATXFlag);
-	}
-	
-	public static void setDueDay_GreaterOf(String dueDay_GreaterOf) {
-		dueDay_GreaterOfThreadLocal.set(dueDay_GreaterOf);
-	}
-	
-	public static String getDueDay_GreaterOf() {
-		if(dueDay_GreaterOfThreadLocal.get()==null)
-			return "Error";
-		else
-		 return dueDay_GreaterOfThreadLocal.get();
-	}
-	public static void setPercentage(String percentage) {
-		percentageThreadLocal.set(percentage);
-	}
-	
-	public static String getPercentage() {
-		if(percentageThreadLocal.get()==null)
-			return "Error";
-		else
-		 return percentageThreadLocal.get();
-	}
-	public static void setFlatFee(String flatFee) {
-		flatFeeThreadLocal.set(flatFee);
-	}
-	
-	public static String getFlatFee() {
-		if(flatFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return flatFeeThreadLocal.get();
-	}
-	public static void setInitialFeeAmount(String initialFeeAmount) {
-		initialFeeAmountThreadLocal.set(initialFeeAmount);
-	}
-	
-	public static String getInitialFeeAmount() {
-		if(initialFeeAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return initialFeeAmountThreadLocal.get();
-	}
-	public static void setPerDayFeeAmount(String perDayFeeAmount) {
-		perDayFeeAmountThreadLocal.set(perDayFeeAmount);
-	}
-	
-	public static String getPerDayFeeAmount() {
-		if(perDayFeeAmountThreadLocal.get()==null)
-			return "Error";
-		else
-		 return perDayFeeAmountThreadLocal.get();
-	}
-	public static void setAdditionalLateChargesLimit(String additionalLateChargesLimit) {
-		additionalLateChargesLimitThreadLocal.set(additionalLateChargesLimit);
-	}
-	
-	public static String getAdditionalLateChargesLimit() 
-	{
-		if(additionalLateChargesLimitThreadLocal.get()==null)
-			return "Error";
-		else
-		 return additionalLateChargesLimitThreadLocal.get();
-	}
-	public static void setDueDay_initialFee(String dueDay_initialFee) {
-		dueDay_initialFeeThreadLocal.set(dueDay_initialFee);
-	}
-	
-	public static String getDueDay_initialFee() {
-		if(dueDay_initialFeeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return dueDay_initialFeeThreadLocal.get();
-	}
-	public static void setStartDateInPW(String startDateInPW) {
-		startDateInPWThreadLocal.set(startDateInPW);
-	}
-	
-	public static String getStartDateInPW() {
-		if(startDateInPWThreadLocal.get()==null)
-			return "Error";
-		else
-		 return startDateInPWThreadLocal.get();
-	}
-	public static void setEndDateInPW(String endDateInPW) {
-		endDateInPWThreadLocal.set(endDateInPW);
-	}
-	
-	public static String getEndDateInPW() {
-		if(endDateInPWThreadLocal.get()==null)
-			return "Error";
-		else
-		 return endDateInPWThreadLocal.get();
-	}
-	public static void setPetSecurityDeposit(String petSecurityDeposit) {
-		petSecurityDepositThreadLocal.set(petSecurityDeposit);
-	}
-	
-	public static String getPetSecurityDeposit() {
-		if(petSecurityDepositThreadLocal.get()==null)
-			return "Error";
-		else
-		 return petSecurityDepositThreadLocal.get();
-	}
-	
-	public static boolean getHVACFilterOptOutAddendum() {
-		if(HVACFilterOptOutAddendumThreadLocal.get()==null)
-			return false;
-		else
-		 return HVACFilterOptOutAddendumThreadLocal.get();
-	}
-	public static void setHVACFilterOptOutAddendum(boolean HVACFilterOptOutAddendum) {
-		HVACFilterOptOutAddendumThreadLocal.set(HVACFilterOptOutAddendum);
-	}
-	public static boolean getRBPOptOutAddendumCheck() {
-		if(RBPOptOutAddendumCheckThreadLocal.get()==null)
-			return false;
-		else
-		 return RBPOptOutAddendumCheckThreadLocal.get();
-	}
-	public static void setRBPOptOutAddendumCheck(boolean RBPOptOutAddendumCheck) {
-		RBPOptOutAddendumCheckThreadLocal.set(RBPOptOutAddendumCheck);
-	}
-	public static boolean getFloridaLiquidizedAddendumOption1Check() {
-		if(floridaLiquidizedAddendumOption1CheckThreadLocal.get()==null)
-			return false;
-		else
-		 return floridaLiquidizedAddendumOption1CheckThreadLocal.get();
-	}
-	public static void setFloridaLiquidizedAddendumOption1Check(boolean floridaLiquidizedAddendumOption1Check) {
-		floridaLiquidizedAddendumOption1CheckThreadLocal.set(floridaLiquidizedAddendumOption1Check);
-	}
-	public static void setProrateResidentBenefitPackage(String prorateResidentBenefitPackage) {
-		prorateResidentBenefitPackageThreadLocal.set(prorateResidentBenefitPackage);
-	}
-	
-	public static String getProrateResidentBenefitPackage() {
-		if(prorateResidentBenefitPackageThreadLocal.get()==null)
-			return "Error";
-		else
-		 return prorateResidentBenefitPackageThreadLocal.get();
-	}
-	
-	public static void setArizonaCityFromBuildingAddress(String arizonaCityFromBuildingAddress) {
-		arizonaCityFromBuildingAddressThreadLocal.set(arizonaCityFromBuildingAddress);
-	}
-	
-	public static String getArizonaCityFromBuildingAddress() {
-		if(arizonaCityFromBuildingAddressThreadLocal.get()==null)
-			return "Error";
-		else
-		 return arizonaCityFromBuildingAddressThreadLocal.get();
-	}
-	public static void setArizonaRentCode(String arizonaRentCode) {
-		arizonaRentCodeThreadLocal.set(arizonaRentCode);
-	}
-	
-	public static String getArizonaRentCode() {
-		if(arizonaRentCodeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return arizonaRentCodeThreadLocal.get();
-	}
-	public static boolean getArizonaCodeAvailable() {
-		if(arizonaCodeAvailableThreadLocal.get()==null)
-			return false;
-		else
-		 return arizonaCodeAvailableThreadLocal.get();
-	}
-	public static void setArizonaCodeAvailable(boolean arizonaCodeAvailable) {
-		arizonaCodeAvailableThreadLocal.set(arizonaCodeAvailable);
-	}
-	public static void setPDFFormatType(String PDFFormatType) {
-		PDFFormatTypeThreadLocal.set(PDFFormatType);
-	}
-	
-	public static String getPDFFormatType() {
-		if(PDFFormatTypeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return PDFFormatTypeThreadLocal.get();
-	}
-	public static void setStatusID(int statusID) {
-		statusIDThreadLocal.set(statusID);
-	}
-	
-	public static int getStatusID() {
-		if(statusIDThreadLocal.get()==null)
-			return 0;
-		 return statusIDThreadLocal.get();
-	}
-	
-	public static void setPortfolioTypeForClientType(String PDFFormatType) {
-		portfolioTypeForClientTypeThreadLocal.set(PDFFormatType);
-	}
-	
-	public static String getPortfolioTypeForClientType() {
-		if(portfolioTypeForClientTypeThreadLocal.get()==null)
-			return "Error";
-		else
-		 return portfolioTypeForClientTypeThreadLocal.get();
-	}
-	
-	
-
 	
 	
     // Getter method for autoCharges
@@ -1069,7 +277,7 @@ public class RunnerClass {
 
 	    if (files != null) {
 	        for (File file : files) {
-	            if (file.getName().startsWith(fileName) && file.lastModified() > lastModifiedTime) {
+	            if (file.getName().replace(" ","").replace("_","").startsWith(fileName.replace(" ","").replace("_","")) && file.lastModified() > lastModifiedTime) {
 	                chosenFile = file;
 	                lastModifiedTime = file.lastModified();
 	            }
@@ -1272,48 +480,47 @@ public class RunnerClass {
 	public static void processAfterBuildingIsSelected(WebDriver driver,String SNo,String company, String buildingAbbreviation, String ownerName,String failedReason)
 			throws Exception {
 		if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName) == true) {
-
-			if (PDFReader.readPDFPerMarket(company,SNo) == true) {
-				PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo);
+			ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName());
+			if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
 				PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
-				PropertyWare_OtherInformation.addOtherInformation(driver,company,buildingAbbreviation);
+			
 				
-				failedReason = getFailedReason();
+				failedReason = GetterAndSetterClass.getFailedReason();
 				// Update Completed Status
 				if (failedReason == null||failedReason.equals(""))
 					failedReason = "";
-				else if (getFailedReason().charAt(0) == ',')
+				else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
 					failedReason = failedReason.substring(1);
 				String updateSuccessStatus = "";
-				if (getStatusID() == 0)
-					updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Completed', StatusID=4,NotAutomatedFields='"
-							+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+				if (GetterAndSetterClass.getStatusID() == 0)
+					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
+							+ failedReason + "' where Building like '%"
 							+ buildingAbbreviation + "%'";
 				else
-					updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Review', StatusID=5,NotAutomatedFields='"
-							+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
+							+ failedReason + "' where Building like '%"
 							+ buildingAbbreviation + "%'";
 				DataBase.updateTable(updateSuccessStatus);
 			} else {
-				failedReason = getFailedReason();
+				failedReason = GetterAndSetterClass.getFailedReason();
 				if (failedReason == null||failedReason.equals(""))
 					failedReason = "";
-				else if (getFailedReason().charAt(0) == ',')
+				else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
 					failedReason = failedReason.substring(1);
-				String updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Failed', StatusID=3,NotAutomatedFields='"
-						+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+				String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
+						+ failedReason + "' where Building like '%"
 						+ buildingAbbreviation + "%'";
 				DataBase.updateTable(updateSuccessStatus);
 			}
 
 		} else {
-			failedReason = getFailedReason();
+			failedReason = GetterAndSetterClass.getFailedReason();
 			if (failedReason == null||failedReason.equals(""))
 				failedReason = "";
-			else if (getFailedReason().charAt(0) == ',')
+			else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
 				failedReason = failedReason.substring(1);
-			String updateSuccessStatus = "Update [Automation].LeaseInfo Set Status ='Failed', StatusID=3,NotAutomatedFields='"
-					+ failedReason + "',LeaseCompletionDate= getDate() where BuildingName like '%"
+			String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
+					+ failedReason + "' where Building like '%"
 					+ buildingAbbreviation + "%'";
 			DataBase.updateTable(updateSuccessStatus);
 		}

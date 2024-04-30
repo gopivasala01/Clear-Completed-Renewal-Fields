@@ -28,6 +28,18 @@ public class PropertyWare_AutoCharges
 			js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
 			
+			List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
+			List<WebElement> endDates = driver.findElements(Locators.autoCharge_List_EndDates);
+			List<WebElement> existingAmounts = driver.findElements(Locators.autoCharge_List_Amounts);
+			for (int i = 0; i < existingAutoCharges.size(); i++) {
+			    String autoChargeText = existingAutoCharges.get(i).getText().replaceAll("[.]", "");
+			    String endDateText = endDates.get(i).getText();
+			    String amount = existingAmounts.get(i).getText();
+			    if (autoChargeText.contains("43070 - Resident Benefit") && endDateText.trim().isEmpty() && amount.replace("$", "").equalsIgnoreCase(GetterAndSetterClass.getresidentBenefitsPackage()) ) {
+			    	GetterAndSetterClass.setRBPNoChangeRequired(true);
+			        break; // No need to continue once the condition is met
+			    }
+			}
 			
 			//List<WebElement> startDates = driver.findElements(Locators.autoCharge_List_startDates);
 			//List<WebElement> endDates = driver.findElements(Locators.autoCharge_List_EndDates);
@@ -52,13 +64,13 @@ public class PropertyWare_AutoCharges
 				{
 					System.out.println(" issue in adding Auto Charge - "+description);
 					failedReason = failedReason+","+" Auto Charge - "+description;
-					RunnerClass.setFailedReason(failedReason);
-					RunnerClass.setStatusID(1);
+					GetterAndSetterClass.setFailedReason(failedReason);
+					GetterAndSetterClass.setStatusID(1);
 					continue;
 				}
 				try
 				{
-				List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
+				existingAutoCharges = driver.findElements(Locators.autoCharge_List);
 				List<WebElement> existingAutoChargeAmounts = driver.findElements(Locators.autoCharge_List_Amounts);
 				for(int k=0;k<existingAutoCharges.size();k++)
 				{
@@ -85,13 +97,18 @@ public class PropertyWare_AutoCharges
 						System.out.println(description+" already available");
 						break;
 					}
+					if(chargeCode.contains("43070 - Resident Benefit")&&GetterAndSetterClass.getRBPNoChangeRequired()==true) {
+						availabilityCheck = true;
+						System.out.println("RBP is same and no change is required");
+						break;
+					}
 				}
 				}
 				catch(Exception e)
 				{}
 				if(availabilityCheck==false)
 				{
-					PropertyWare_AutoCharges.addingAnAutoCharge(driver,chargeCode, amount, startDate,endDate, description);
+					addingAnAutoCharge(driver,chargeCode, amount, startDate,endDate, description);
 				}
 				
 			}
@@ -106,7 +123,7 @@ public class PropertyWare_AutoCharges
 	      {
 	    	  e.printStackTrace();
 	    	  failedReason = failedReason+","+"Something went wrong in adding auto charges";
-	    	  RunnerClass.setFailedReason(failedReason);
+	    	  GetterAndSetterClass.setFailedReason(failedReason);
 			  System.out.println("Something went wrong in adding auto charges");
 			  driver.navigate().refresh();
 			  return true;
@@ -161,10 +178,10 @@ public class PropertyWare_AutoCharges
 				try
 				{
 				e.printStackTrace();
-				RunnerClass.setStatusID(1);
+				GetterAndSetterClass.setStatusID(1);
 				System.out.println("Issue in adding Move in Charge"+description);
 				failedReason =  failedReason+","+"Issue in adding Auto Charge - "+description;
-				RunnerClass.setFailedReason(failedReason);
+				GetterAndSetterClass.setFailedReason(failedReason);
 				driver.findElement(Locators.autoCharge_CancelButton).click();
 				return false;	
 				}

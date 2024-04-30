@@ -78,7 +78,7 @@ public class PropertyWare
 					{
 						System.out.println("Building Not Found");
 					    failedReason = failedReason+","+ "Building Not Found";
-					    RunnerClass.setFailedReason(failedReason);
+					    GetterAndSetterClass.setFailedReason(failedReason);
 						return false;
 					}
 					}
@@ -103,7 +103,7 @@ public class PropertyWare
 					{
 						System.out.println("Building Not Found");
 					    failedReason =  failedReason+","+ "Building Not Found";
-					    RunnerClass.setFailedReason(failedReason);
+					    GetterAndSetterClass.setFailedReason(failedReason);
 						return false;
 					}
 					}
@@ -113,7 +113,7 @@ public class PropertyWare
 					{
 				    System.out.println("Building Not Found");
 			        failedReason =  failedReason+","+ "Building Not Found";
-			        RunnerClass.setFailedReason(failedReason);
+			        GetterAndSetterClass.setFailedReason(failedReason);
 				    return false;
 					}
 				}
@@ -151,15 +151,7 @@ public class PropertyWare
 							if(lease.toLowerCase().contains(completeBuildingAbbreviation.toLowerCase()))
 							{
 								
-								try
-								{
-									RunnerClass.setPortfolioTypeForClientType(driver.findElement(By.xpath("(//*[@class='section'])["+(i+1)+"]/ul/li["+(j+1)+"]/a")).getText().trim().split(":")[0]);
-									RunnerClass.setPortfolioName(RunnerClass.getPortfolioTypeForClientType());
-								System.out.println("Portfolio type = "+RunnerClass.getPortfolioType());
-								}
-								catch(Exception e) 
-								{}
-								
+							
 								driver.findElement(By.xpath("(//*[@class='section'])["+(i+1)+"]/ul/li["+(j+1)+"]/a")).click();
 								leaseSelected = true;
 								break;
@@ -173,14 +165,7 @@ public class PropertyWare
 							if(lease.toLowerCase().contains(building.toLowerCase())&&lease.contains(":"))
 							{
 								
-								try
-								{
-									RunnerClass.setPortfolioTypeForClientType (driver.findElement(By.xpath("(//*[@class='section'])["+(i+1)+"]/ul/li["+(j+1)+"]/a")).getText().trim().split(":")[0]);
-								RunnerClass.setPortfolioName(RunnerClass.getPortfolioTypeForClientType());
-								System.out.println("Portfolio type = "+RunnerClass.getPortfolioType());
-								}
-								catch(Exception e) 
-								{}
+							
 								
 								driver.findElement(By.xpath("(//*[@class='section'])["+(i+1)+"]/ul/li["+(j+1)+"]/a")).click();
 								leaseSelected = true;
@@ -191,37 +176,20 @@ public class PropertyWare
 					}
 					if(leaseSelected==true)
 					{
-						/*
-						//Decide Portfolio Type
-						int portfolioFlag =0;
-						for(int k=0;k<mainPackage.AppConfig.IAGClientList.length;k++)
-						{
-							String portfolioStarting = mainPackage.AppConfig.IAGClientList[k].toLowerCase();
-							if(RunnerClass.portfolioType.toLowerCase().startsWith(portfolioStarting))
-							{
-								portfolioFlag =1;
-								break;
-								//PDFReader.portfolioType = "MCH";
-							}
-						}
-						
-						if(portfolioFlag==1)
-							RunnerClass.portfolioType = "MCH";
-						else RunnerClass.portfolioType = "Others";
-						*/
+			
 					     return true;
 					}
 				}
 				if(leaseSelected==false)
 				{
 				    failedReason =  failedReason+","+ "Building Not Found";
-				    RunnerClass.setFailedReason(failedReason);
+				    GetterAndSetterClass.setFailedReason(failedReason);
 					return false;
 				}
 	         } catch(Exception e) 
 		     {
 	         failedReason = failedReason+","+  "Issue in selecting Building";
-	         RunnerClass.setFailedReason(failedReason);
+	         GetterAndSetterClass.setFailedReason(failedReason);
 		     return false;
 		     }
 		return true;
@@ -232,99 +200,11 @@ public class PropertyWare
 		String failedReason = "";
 		Actions actions = new Actions(driver);
 		JavascriptExecutor js = (JavascriptExecutor)driver;
-		//City from Building Address for Arizona rent code
-		try
-		{
-			String buildingAddress = driver.findElement(Locators.buildingAddress).getText();
-			String[] lines = buildingAddress.split("\\n");
-			String city = lines[1].split(" ")[0].trim();
-			RunnerClass.setArizonaCityFromBuildingAddress(city);
-			System.out.println("Building Address = "+buildingAddress);
-			System.out.println("Building City = "+city);
-		}
-		catch(Exception e)
-		{
-			
-		}
-		
-		PropertyWare.intermittentPopUp(driver);
-		PDFReader.setRCDetails("");
 		driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
        
-		
 		try
 		{
-			//RunnerClass.portfolioType = driver.findElement(Locators.checkPortfolioType).getText();
-			//System.out.println("Portfolio Type = "+RunnerClass.portfolioType);
-		
-			//Set POrtfolioType always "Other" as we don't need MCH anymore.
-		 RunnerClass.setPortfolioType("Others");
-			
-		int portfolioFlag =0;
-		for(int i=0;i<AppConfig.IAGClientList.length;i++)
-		{
-			String type = RunnerClass.getPortfolioTypeForClientType();
-			if(RunnerClass.getPortfolioTypeForClientType().startsWith(mainPackage.AppConfig.IAGClientList[i]))
-			{
-				portfolioFlag =1;
-				break;
-			}
-		}
-		
-		if(portfolioFlag==1)
-			RunnerClass.setPortfolioTypeForClientType("MCH");
-		else RunnerClass.setPortfolioTypeForClientType("Others");
-	    System.out.println("Portfolio Type = "+RunnerClass.getPortfolioTypeForClientType());
-		}
-	
-		catch(Exception e) 
-		{
-			System.out.println("Unable to fetch Portfolio Type");
-			 failedReason =  failedReason+","+ "Unable to fetch Portfolio Type";
-			 RunnerClass.setFailedReason(failedReason);
-		   // return false;  -- Commented this as we are not using Portfolio condition anywhere in the process
-		}
-		
-		//RC details
-		
-		try
-		{
-			actions.moveToElement(driver.findElement(Locators.RCDetails)).build().perform();
-			PDFReader.setRCDetails(driver.findElement(Locators.RCDetails).getText());
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			PDFReader.setRCDetails("Error");
-		}
-		System.out.println("RC Details = "+PDFReader.getRCDetails());
-		
-		try
-		{
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-		Thread.sleep(2000);
-		if(driver.findElement(Locators.leasesTab).getText().equals("Leases"))
-		driver.findElement(Locators.leasesTab).click();
-		else 
-			driver.findElement(Locators.leasesTab2).click();
-		driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		try
-		{
-			actions.moveToElement(driver.findElement(By.partialLinkText(ownerName.trim()))).build().perform();
-		driver.findElement(By.partialLinkText(ownerName.trim())).click();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("Unable to Click Lease Owner Name");
-		    failedReason =  failedReason+","+  "Unable to Click Lease Onwer Name";
-		    RunnerClass.setFailedReason(failedReason);
-			return false;
-		}
-		//Pop up after clicking Lease Name
-		PropertyWare.intermittentPopUp(driver);
 		
 		driver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -333,10 +213,10 @@ public class PropertyWare
         //Start and End Dates in Property Ware
         try
         {
-        	RunnerClass.setStartDateInPW(driver.findElement(Locators.leaseStartDate_PW).getText());
-			System.out.println("Lease Start Date in PW = "+RunnerClass.getStartDateInPW());
-			RunnerClass.setEndDateInPW(driver.findElement(Locators.leaseEndDate_PW).getText());
-			System.out.println("Lease End Date in PW = "+RunnerClass.getEndDateInPW());
+        	GetterAndSetterClass.setStartDateInPW(driver.findElement(Locators.leaseStartDate_PW).getText());
+			System.out.println("Lease Start Date in PW = "+GetterAndSetterClass.getStartDateInPW());
+			GetterAndSetterClass.setEndDateInPW(driver.findElement(Locators.leaseEndDate_PW).getText());
+			System.out.println("Lease End Date in PW = "+GetterAndSetterClass.getEndDateInPW());
         }
         catch(Exception e)
         {}
@@ -359,13 +239,14 @@ public class PropertyWare
 			 {
 			 	documents.get(i).click();
 			 	filename = documents.get(i).getText();
-			 	RunnerClass.setFileName(filename);
+			 	GetterAndSetterClass.setFileName(filename);
 				checkLeaseAgreementAvailable = true;
 				PropertyWare.waitUntilFileIsDownloaded(filename);
 				break;
 			 }
 			}
 			if(checkLeaseAgreementAvailable == true)
+				
 				break;
 		}
 		
@@ -373,7 +254,7 @@ public class PropertyWare
 		{
 			System.out.println("Lease Agreement is not available");
 		    failedReason =  failedReason+","+ "Lease Agreement is not available";
-		    RunnerClass.setFailedReason(failedReason);
+		    GetterAndSetterClass.setFailedReason(failedReason);
 			return false;
 		}
 		Thread.sleep(2000);
@@ -393,7 +274,7 @@ public class PropertyWare
 		{
 			System.out.println("Unable to download Lease Agreement");
 		    failedReason =  failedReason+","+"Unable to download Lease Agreement";
-		    RunnerClass.setFailedReason(failedReason);
+		    GetterAndSetterClass.setFailedReason(failedReason);
 			return false;
 		}
 		return true;
@@ -430,7 +311,7 @@ public class PropertyWare
 		}
 	}
 	
-	public static boolean selectBuilding(WebDriver driver,String company,String ownerName)
+	public static boolean selectBuilding(WebDriver driver,String company,String ownerName,String LeaseEntityID)
 	{
 		String failedReason = "";
 		Actions actions = new Actions(driver);
@@ -438,15 +319,8 @@ public class PropertyWare
 		try
 		{
 			//Get BuildingEntityID from LeaseFact_Dashboard table
-			String buildingEntityID = DataBase.getBuildingEntityID(company,ownerName);
-			if(buildingEntityID.equals("Error"))
-			{
-				System.out.println("Building Not Found");
-				failedReason =  failedReason+","+ "Building Not Found";
-				return false;
-			}
-			else
-			{
+			// buildingEntityID = DataBase.getBuildingEntityID(company,ownerName);
+			
 			driver.manage().timeouts().implicitlyWait(100,TimeUnit.SECONDS);
 	        wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        driver.navigate().refresh();
@@ -458,143 +332,21 @@ public class PropertyWare
 	        String marketName = "HomeRiver Group - "+company;
 	        Select marketDropdownList = new Select(driver.findElement(Locators.marketDropdown));
 	        marketDropdownList.selectByVisibleText(marketName);
-	        String buildingPageURL = AppConfig.buildingPageURL+buildingEntityID;
+	        String buildingPageURL = AppConfig.leasePageURL+LeaseEntityID;
 	        driver.navigate().to(buildingPageURL);
 	        PropertyWare.intermittentPopUp(driver);
-	        try
-	        {
-	        	RunnerClass.setPortfolioTypeForClientType(driver.findElement(Locators.checkPortfolioType).getText().trim().split(":")[0]);
-	        	RunnerClass.setPortfolioName(RunnerClass.getPortfolioTypeForClientType());
-				System.out.println("Portfolio type = "+RunnerClass.getPortfolioTypeForClientType());
-	        }
-	        catch(Exception e)
-	        {
-	        	
-	        }
+	     
 	        return true;
 			}
-		}
+		
 		catch(Exception e)
 		{
-			System.out.println("Building Not Found");
-		    failedReason =  failedReason+","+ "Building Not Found";
+			System.out.println("Lease Not Found");
+		    failedReason =  failedReason+","+ "Lease Not Found";
 			return false;
 		}
 		
-		
-		/*
-		RunnerClass.failedReason = "";
-		driver.navigate().refresh();
-		boolean checkBuildingIsClicked = false;
-		try
-		{
-	    driver.findElement(Locators.dashboardsTab).click();
-		driver.findElement(Locators.searchbox).clear();
-		driver.findElement(Locators.searchbox).sendKeys(building);
-			try
-			{
-			RunnerClass.wait.until(ExpectedConditions.invisibilityOf(driver.findElement(Locators.searchingLoader)));
-			}
-			catch(Exception e)
-			{
-				try
-				{
-				driver.manage().timeouts().implicitlyWait(200,TimeUnit.SECONDS);
-				driver.navigate().refresh();
-				driver.findElement(Locators.dashboardsTab).click();
-				driver.findElement(Locators.searchbox).clear();
-				driver.findElement(Locators.searchbox).sendKeys(building);
-				RunnerClass.wait.until(ExpectedConditions.invisibilityOf(driver.findElement(Locators.searchingLoader)));
-				}
-				catch(Exception e2) {}
-			}
-			try
-			{
-			driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
-			if(driver.findElement(Locators.noItemsFoundMessagewhenLeaseNotFound).isDisplayed())
-			{
-				long count = building.chars().filter(ch -> ch == '.').count();
-				if(building.chars().filter(ch -> ch == '.').count()>=2)
-				{
-					building = building.substring(building.indexOf(".")+1,building.length());
-					driver.manage().timeouts().implicitlyWait(200,TimeUnit.SECONDS);
-					driver.navigate().refresh();
-					driver.findElement(Locators.dashboardsTab).click();
-					driver.findElement(Locators.searchbox).clear();
-					driver.findElement(Locators.searchbox).sendKeys(building);
-					RunnerClass.wait.until(ExpectedConditions.invisibilityOf(driver.findElement(Locators.searchingLoader)));
-					try
-					{
-					driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
-					if(driver.findElement(Locators.noItemsFoundMessagewhenLeaseNotFound).isDisplayed())
-					{
-						System.out.println("Building Not Found");
-					    RunnerClass.failedReason =  RunnerClass.failedReason+","+ "Building Not Found";
-						return false;
-					}
-					}
-					catch(Exception e3) {}
-				}
-				else
-				{
-				System.out.println("Building Not Found");
-			    RunnerClass.failedReason =  RunnerClass.failedReason+","+ "Building Not Found";
-				return false;
-				}
-			}
-			}
-			catch(Exception e2)
-			{
-			}
-			driver.manage().timeouts().implicitlyWait(150,TimeUnit.SECONDS);
-			Thread.sleep(1000);
-			System.out.println(building);
-		// Select Lease from multiple leases
-			List<WebElement> displayedCompanies =null;
-			try
-			{
-				displayedCompanies = driver.findElements(Locators.searchedLeaseCompanyHeadings);
-			}
-			catch(Exception e)
-			{
-				
-			}
-				boolean leaseSelected = false;
-				for(int i =0;i<displayedCompanies.size();i++)
-				{
-					String companyName = displayedCompanies.get(i).getText();
-					if(companyName.toLowerCase().contains(company.toLowerCase())&&!companyName.contains("Legacy"))
-					{
-		              driver.findElement(Locators.advancedSearch).click();
-		              RunnerClass.actions.moveToElement(driver.findElement(Locators.advancedSearch_buildingsSection)).build().perform();
-		              List<WebElement> buildingAddresses =  driver.findElements(Locators.advancedSearch_buildingAddresses);
-		              for(int j=0;j<buildingAddresses.size();j++)
-		              {
-		            	  String address = buildingAddresses.get(j).getText();
-		            	  if(address.toLowerCase().endsWith(building.toLowerCase()))
-		            	  {
-		            		  buildingAddresses.get(j).click();
-		            		  checkBuildingIsClicked = true;
-		            		  break;
-		            	  }
-		              }
-		              if(checkBuildingIsClicked==true)
-		            	  break;
-					}
-				}
-				if(checkBuildingIsClicked==false)
-				{
-					System.out.println("Building Not Found");
-				    RunnerClass.failedReason =  RunnerClass.failedReason+","+ "Building Not Found";
-					return false;
-				}
-		}
-		catch(Exception e)
-		{
-			
-		}
-		return true;
-	*/
+	
 	}
 	
 	public static void intermittentPopUp(WebDriver driver) throws Exception

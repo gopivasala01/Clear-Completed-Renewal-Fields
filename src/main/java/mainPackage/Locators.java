@@ -58,6 +58,7 @@ public class Locators
     public static By autoCharge_Description = By.name("charge.description");
     public static By autoCharge_List = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[1]");
     public static By autoCharge_List_Amounts = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[3]");
+    public static By autoCharge_List_EndDates = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[6]");
     public static By autoCharge_StartDate = By.name("charge.startDateAsString");
     public static By autoCharge_EndDate = By.name("charge.endDateAsString");
     public static By autoCharge_Amount = By.name("charge.amountAsString");

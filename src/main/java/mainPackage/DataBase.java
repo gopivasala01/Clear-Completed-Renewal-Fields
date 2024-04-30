@@ -55,7 +55,7 @@ public class DataBase
 		            	rs.beforeFirst();
 		            }
 		            System.out.println("No of Rows = "+rows);
-		            RunnerClass.pendingRenewalLeases = new String[rows][4];
+		            RunnerClass.pendingRenewalLeases = new String[rows][5];
 		           int  i=0;
 		            while(rs.next())
 		            {
@@ -63,7 +63,8 @@ public class DataBase
 		            	String 	company =  (String) rs.getObject(2);
 		                String  buildingAbbreviation = (String) rs.getObject(3);
 		                String  ownerName = (String) rs.getObject(4);
-		                System.out.println( SNo +" | " + company +" |  "+buildingAbbreviation+" | "+ownerName);
+		                String  LeaseEntityID = String.valueOf(rs.getObject(5));
+		                System.out.println( SNo +" | " + company +" |  "+buildingAbbreviation+" | "+ownerName+" | "+LeaseEntityID);
 		    				//SNo
 		                	RunnerClass.pendingRenewalLeases[i][0] = SNo;
 		                	//Company
@@ -72,6 +73,8 @@ public class DataBase
 		    				RunnerClass.pendingRenewalLeases[i][2] = buildingAbbreviation;
 		    				//Owner Name
 		    				RunnerClass.pendingRenewalLeases[i][3] = ownerName;
+		    				//Lease Entity ID
+		    				RunnerClass.pendingRenewalLeases[i][4] = LeaseEntityID;
 		    				i++;
 		            }	
 		            System.out.println("Total Pending Buildings  = " +RunnerClass.pendingRenewalLeases.length);
@@ -115,7 +118,7 @@ public class DataBase
 		        ResultSet rs = null;
 		            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		            con = DriverManager.getConnection(AppConfig.connectionUrl);
-		            String SQL = "Select ChargeCode, Amount, autoCharge_StartDate,EndDate,Description from automation.LeaseCloseOutsChargeChargesConfiguration_"+SNo+" Where  AutoCharge=1";
+		            String SQL = "Select ChargeCode, Amount,StartDate,EndDate,Description from automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Where  Flag=1";
 		            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		           // stmt = con.createStatement();
 		            rs = stmt.executeQuery(SQL);
@@ -208,7 +211,7 @@ public class DataBase
 		    } catch (SQLException e) {
 		      e.printStackTrace();
 		    }
-		    RunnerClass.setStatusID(3);
+		    GetterAndSetterClass.setStatusID(3);
 	  }
 	public static String getBuildingEntityID(String company,String ownerName)
 	{

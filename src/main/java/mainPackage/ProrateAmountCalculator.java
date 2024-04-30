@@ -16,8 +16,8 @@ public class ProrateAmountCalculator {
 	    	//Prorate RBP
 	    	try
 			{ 
-				int dayInMoveInDate = Integer.parseInt(RunnerClass.getStartDate().split("/")[1]);
-				int daysInMonth = RunnerClass.getDaysInMonth(RunnerClass.getStartDate());
+				int dayInMoveInDate = Integer.parseInt(GetterAndSetterClass.getStartDate().split("/")[1]);
+				int daysInMonth = RunnerClass.getDaysInMonth(GetterAndSetterClass.getStartDate());
 				double RBPAmount = Double.parseDouble(Amount);
 				double RBPPerDay = RBPAmount /daysInMonth;
 				double prorateRBP = (dayInMoveInDate-1)*RBPPerDay; 
