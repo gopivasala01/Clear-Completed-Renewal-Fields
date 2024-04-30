@@ -91,7 +91,9 @@ public class PropertyWare_updateValues
 			if(PropertyWare_updateValues.updateDates(driver,company) == false) {
 				return false;
 			}
-			PropertyWare_updateValues.addingValuesToTable(company,buildingAbbreviation,SNo);
+			if(PropertyWare_updateValues.addingValuesToTable(company,buildingAbbreviation,SNo)==false) {
+				return false;
+			}
 			if(PropertyWare_updateValues.decideMoveInAndAutoCharges(company,buildingAbbreviation,SNo) == false) {
 				return false;
 			}
@@ -111,10 +113,10 @@ public class PropertyWare_updateValues
 			JavascriptExecutor js = (JavascriptExecutor)driver;
 			
 			//Get all Required dates converted
-			String lastDayOfTheStartDate = RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate());
+		/*	String lastDayOfTheStartDate = RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate());
 			String firstFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),1);
 			String secondFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),2);
-			
+		*/	
 			try {
 				driver.navigate().refresh();
 				PropertyWare.intermittentPopUp(driver);
@@ -170,8 +172,6 @@ public class PropertyWare_updateValues
 						GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
 					}
 				}
-				
-				
 				
 			}
 			catch(Exception e) {
@@ -243,9 +243,6 @@ public class PropertyWare_updateValues
 			}
 			return true;
 		}
-		
-		
-
 		
 		
 		public static void getRentCodeForArizona(WebDriver driver) throws Exception
