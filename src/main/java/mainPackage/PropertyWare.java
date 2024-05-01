@@ -195,13 +195,33 @@ public class PropertyWare
 		return true;
 	}
 	
-	public static boolean downloadLeaseAgreement(WebDriver driver,String building, String ownerName) throws Exception
+	public static boolean downloadLeaseAgreement(WebDriver driver,String building, String ownerName,String company) throws Exception
 	{
 		String failedReason = "";
 		Actions actions = new Actions(driver);
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		
+		if(company.equalsIgnoreCase("Arizona")) {
+			//City from Building Address for Arizona rent code
+			try
+			{
+				driver.findElement(Locators.buildingLinkInLeasePage).click();
+				PropertyWare.intermittentPopUp(driver);
+				String buildingAddress = driver.findElement(Locators.buildingAddress).getText();
+				String[] lines = buildingAddress.split("\\n");
+				String city = lines[1].split(" ")[0].trim();
+				GetterAndSetterClass.setArizonaCityFromBuildingAddress(city);
+				System.out.println("Building Address = "+buildingAddress);
+				System.out.println("Building City = "+city);
+				driver.navigate().back();
+			}
+			catch(Exception e)
+			{
+				
+			}
+		}
        
 		try
 		{
@@ -258,7 +278,9 @@ public class PropertyWare
 			return false;
 		}
 		Thread.sleep(2000);
-		
+		if(ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName()) == false) {
+			return false;
+		}
 		
 		return true;
 			}

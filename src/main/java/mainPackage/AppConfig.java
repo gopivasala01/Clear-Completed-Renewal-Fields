@@ -12,7 +12,7 @@ public class AppConfig
 		public static String pdfImage = "C:\\SantoshMurthyP\\Tessaract Images\\";
 		
 	
-	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE()-2 AS DATE) and AutomationStatus = 'Pending'";
+	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE()-1 AS DATE) and AutomationStatus = 'Pending' ";
 			   //"Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Florida'  order by id asc";
 	   //public static String lastMonthLeases1 = "Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Alabama'  order by id asc";
 		//public static String lastMonthLeases = "Select  Company,buildingabbreviation,LeaseName from [Automation].[leaseAuditAutomation] where notes = 'Values did not match'";

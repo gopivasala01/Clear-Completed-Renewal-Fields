@@ -17,18 +17,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import DataReader.ReadingLeaseAgreements;
 
 public class PropertyWare_updateValues 
 {
-	
-	
-
-	
-	
-	
-
-	
 	
 	
 	//ConfigureValues
@@ -46,8 +37,15 @@ public class PropertyWare_updateValues
 			
 			String failedReason ="";
 			//For Arizona - To get Rent Charge codes
-			if(company.equals("Arizona"))
-			PropertyWare_updateValues.getRentCodeForArizona(driver);
+			try {
+				if(company.equals("Arizona"))
+					PropertyWare_updateValues.getRentCodeForArizona(driver);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 			
 			//Create table for the lease with it's SNO
 			try {
@@ -105,7 +103,7 @@ public class PropertyWare_updateValues
 		public static boolean updateDates(WebDriver driver,String company) throws Exception
 		{
 			
-			
+		
 			String priorMonthlyRent = "";
 			String failedReason = "";
 			Actions actions = new Actions(driver);
@@ -117,7 +115,7 @@ public class PropertyWare_updateValues
 			String firstFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),1);
 			String secondFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),2);
 		*/	
-			try {
+			
 				driver.navigate().refresh();
 				PropertyWare.intermittentPopUp(driver);
 				driver.findElement(Locators.summaryEditButton).click();
@@ -136,24 +134,23 @@ public class PropertyWare_updateValues
 					//GenericMethods.logger.error("Issue in getting Renewal Status");
 					 failedReason = failedReason+","+ "Issue in getting Renewal Status";
 					 GetterAndSetterClass.setFailedReason(failedReason);
-				   
-				     
 				}
-				actions.moveToElement(driver.findElement(Locators.priorMonthlyRent)).build().perform();
-				String priorAmount = driver.findElement(Locators.priorMonthlyRent).getAttribute("value");
-				priorMonthlyRent = priorAmount.replace("$", "").replace(",", "");
-				System.out.println("Prior Montly Rent = "+priorMonthlyRent);
-				actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
-			}
-			catch(Exception e) {
-				priorMonthlyRent = "Error";
-				//GenericMethods.logger.error("Issue in getting prior monthly rent");
-				 failedReason = failedReason+","+ "Issue in getting prior monthly rent";
-				 GetterAndSetterClass.setFailedReason(failedReason);
-			    // return false;
-			} 
+				try {
+					actions.moveToElement(driver.findElement(Locators.priorMonthlyRent)).build().perform();
+					String priorAmount = driver.findElement(Locators.priorMonthlyRent).getAttribute("value");
+					priorMonthlyRent = priorAmount.replace("$", "").replace(",", "");
+					System.out.println("Prior Montly Rent = "+priorMonthlyRent);
+					actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
+				}
+				catch(Exception e) {
+					priorMonthlyRent = "Error";
+					//GenericMethods.logger.error("Issue in getting prior monthly rent");
+					 failedReason = failedReason+","+ "Issue in getting prior monthly rent";
+					 GetterAndSetterClass.setFailedReason(failedReason);
+				    // return false;
+				} 
+			
 		
-
 			try {
 				if(GetterAndSetterClass.getStartDate().split("/")[1].equals("1")||GetterAndSetterClass.getStartDate().split("/")[1].equals("01"))
 			    {
@@ -175,7 +172,10 @@ public class PropertyWare_updateValues
 				
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				 failedReason = failedReason+","+ "Issue in getting prorate dates";
+				 GetterAndSetterClass.setFailedReason(failedReason);
+				 return false;
 			}
 			
 			return true;
@@ -225,7 +225,13 @@ public class PropertyWare_updateValues
 			String failedReason ="";
 			String query1="";
 			if(GetterAndSetterClass.getRenewalStatusValue().toLowerCase().contains("charge renewal fee - annual")) {
-				if(!GetterAndSetterClass.getProrateRent().equalsIgnoreCase("Error")|| !GetterAndSetterClass.getProrateRent().equalsIgnoreCase("n/a") ||!GetterAndSetterClass.getProrateRent().equalsIgnoreCase("0.00")) {
+				if(GetterAndSetterClass.getProrateRent().equalsIgnoreCase("Error")||GetterAndSetterClass.getProrateRent().equalsIgnoreCase("0.00")) {
+					System.out.println("Prorate Rent Error or 0");
+					failedReason =  failedReason+","+"Prorate Rent Error ";
+					GetterAndSetterClass.setFailedReason(failedReason);
+					return false;
+				}
+				else {
 					if(GetterAndSetterClass.getresidentBenefitsPackageAvailabilityCheckFlag()==true) {
 						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14,15,16)";
 					}
@@ -233,6 +239,7 @@ public class PropertyWare_updateValues
 						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (15,16)";
 					}
 					DataBase.updateTable(query1);
+					
 				}
 			}
 			else {
@@ -247,30 +254,39 @@ public class PropertyWare_updateValues
 		
 		public static void getRentCodeForArizona(WebDriver driver) throws Exception
 		{
-			Actions actions = new Actions(driver);
-			JavascriptExecutor js = (JavascriptExecutor)driver;
-			js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-			driver.findElement(Locators.ledgerTab).click();
-			Thread.sleep(2000);
-			actions.sendKeys(Keys.ESCAPE).build().perform();
-			driver.findElement(Locators.newCharge).click();
-			Thread.sleep(2000);
-			//Account code
-			driver.findElement(Locators.accountDropdown).click();
-			List<WebElement> chargeCodes = driver.findElements(Locators.chargeCodesList);
-			for(int i=0;i<chargeCodes.size();i++)
-			{
-				String code = chargeCodes.get(i).getText();
-				if(code.contains(GetterAndSetterClass.getArizonaCityFromBuildingAddress()))
+			try {
+				Actions actions = new Actions(driver);
+				JavascriptExecutor js = (JavascriptExecutor)driver;
+				js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+				driver.findElement(Locators.ledgerTab).click();
+				Thread.sleep(2000);
+				actions.sendKeys(Keys.ESCAPE).build().perform();
+				driver.findElement(Locators.newCharge).click();
+				Thread.sleep(2000);
+				//Account code
+				driver.findElement(Locators.arizonaAccountDropdown).click();
+				List<WebElement> chargeCodes = driver.findElements(Locators.chargeCodesList);
+				for(int i=0;i<chargeCodes.size();i++)
 				{
-					GetterAndSetterClass.setArizonaRentCode(code);
-					GetterAndSetterClass.setArizonaCodeAvailable(true);
-					break;
+					String code = chargeCodes.get(i).getText();
+					if(code.contains(GetterAndSetterClass.getArizonaCityFromBuildingAddress()))
+					{
+						GetterAndSetterClass.setArizonaRentCode(code);
+						GetterAndSetterClass.setArizonaCodeAvailable(true);
+						break;
+						
+					}
 					
 				}
+				actions.sendKeys(Keys.ESCAPE).build().perform();
+				driver.findElement(Locators.moveInChargeCancel).click();
+				Thread.sleep(1000);
+				driver.findElement(Locators.summaryTab).click();
 				
 			}
-			driver.findElement(Locators.moveInChargeCancel).click();
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 			
 		}
 		

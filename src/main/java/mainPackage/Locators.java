@@ -40,6 +40,7 @@ public class Locators
     public static By ledgerTab = By.id("tab2");
     public static By newCharge = By.xpath("//*[@value='New Charge']");
     public static By accountDropdown = By.name("charge.GLAccountID");
+    public static By arizonaAccountDropdown = By.xpath("//*[@name='charge.GLAccountID']//following-sibling::span");
     public static By chargeCodesList = By.xpath("//*[@name='charge.GLAccountID']/optgroup/option");
     public static By accountList = By.xpath("(//*[@class='edit'])[9]/descendant::select[1]/optgroup/option");
     public static By referenceName = By.name("charge.refNo");
@@ -138,6 +139,9 @@ public class Locators
     //Renewal Status
     public static By renewalStatus = By.xpath("//th[text()='Renewal Status']//following::td[1]/select");
     public static By priorMonthlyRent = By.xpath("//*[text()='Prior Monthly Rent']/following::input[1]");
+    
+    //Building Click on Lease Page
+    public static By buildingLinkInLeasePage = By.xpath("//a[@title=\"House\"]");
 
 
 

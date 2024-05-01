@@ -157,10 +157,8 @@ public class RunnerClass {
 				if (PropertyWare.selectBuilding(driver,company, ownerName,LeaseEntityID) == true) {
 					RunnerClass.processAfterBuildingIsSelected(driver,SNo,company, buildingAbbreviation, ownerName,failedReason);
 				} else if ((PropertyWare.searchBuilding(driver,company, buildingAbbreviation,completeBuildingAbbreviation) == true)) {
-					if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName) == true) {
-							ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName());
+					if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName,company) == true) {
 						if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
-							
 							PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
 							
 
@@ -173,12 +171,10 @@ public class RunnerClass {
 							String updateSuccessStatus = "";
 							if (statusID == 0)
 								updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
-										+ failedReason + "' where Building like '%"
-										+ buildingAbbreviation + "%'";
+										+ failedReason + "' where ID ="+ SNo ;
 							else
 								updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
-										+ failedReason + "' where Building like '%"
-										+ buildingAbbreviation + "%'";
+										+ failedReason + "' where ID ="+ SNo ;
 							DataBase.updateTable(updateSuccessStatus);
 
 						} else {
@@ -188,8 +184,7 @@ public class RunnerClass {
 							else if (failedReason.charAt(0) == ',')
 								failedReason = failedReason.substring(1);
 							String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
-									+ failedReason + "' where Building like '%"
-									+ buildingAbbreviation + "%'";
+									+ failedReason + "' where ID ="+ SNo ;
 							DataBase.updateTable(updateSuccessStatus);
 
 						}
@@ -204,8 +199,7 @@ public class RunnerClass {
 							else if (failedReason.charAt(0) == ',')
 								failedReason = failedReason.substring(1);
 							String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
-									+ failedReason + "' where Building like '%"
-									+ buildingAbbreviation + "%'";
+									+ failedReason + "' where ID ="+ SNo ;
 							DataBase.updateTable(updateSuccessStatus);
 						}
 					}
@@ -479,8 +473,7 @@ public class RunnerClass {
 
 	public static void processAfterBuildingIsSelected(WebDriver driver,String SNo,String company, String buildingAbbreviation, String ownerName,String failedReason)
 			throws Exception {
-		if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName) == true) {
-			ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName());
+		if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName,company) == true) {
 			if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
 				PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
 			
@@ -494,12 +487,10 @@ public class RunnerClass {
 				String updateSuccessStatus = "";
 				if (GetterAndSetterClass.getStatusID() == 0)
 					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
-							+ failedReason + "' where Building like '%"
-							+ buildingAbbreviation + "%'";
+							+ failedReason + "' where ID ="+ SNo ;
 				else
 					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
-							+ failedReason + "' where Building like '%"
-							+ buildingAbbreviation + "%'";
+							+ failedReason + "' where ID ="+ SNo ;
 				DataBase.updateTable(updateSuccessStatus);
 			} else {
 				failedReason = GetterAndSetterClass.getFailedReason();
@@ -508,8 +499,7 @@ public class RunnerClass {
 				else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
 					failedReason = failedReason.substring(1);
 				String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
-						+ failedReason + "' where Building like '%"
-						+ buildingAbbreviation + "%'";
+						+ failedReason + "' where ID ="+ SNo ;
 				DataBase.updateTable(updateSuccessStatus);
 			}
 
@@ -520,8 +510,7 @@ public class RunnerClass {
 			else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
 				failedReason = failedReason.substring(1);
 			String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
-					+ failedReason + "' where Building like '%"
-					+ buildingAbbreviation + "%'";
+					+ failedReason + "' where ID ="+ SNo ;
 			DataBase.updateTable(updateSuccessStatus);
 		}
 	}

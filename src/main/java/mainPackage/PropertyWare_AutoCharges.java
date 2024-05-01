@@ -131,8 +131,6 @@ public class PropertyWare_AutoCharges
 			
 		}
 		
-		
-		
 		public static boolean addingAnAutoCharge(WebDriver driver,String accountCode, String amount, String startDate,String endDate,String description) throws Exception
 		{
 			String failedReason="";
