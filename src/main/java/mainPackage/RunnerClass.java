@@ -116,7 +116,7 @@ public class RunnerClass {
 			FileUtils.cleanDirectory(new File(AppConfig.downloadFilePath));
 		} catch (Exception e) {
 		} 
-
+		
 		if (company.equals("Chicago PFW"))
 			company = "Chicago";
 		if (company.contains("Austin") || company.contains("California") || company.contains("Chattanooga")

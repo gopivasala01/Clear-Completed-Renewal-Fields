@@ -18,7 +18,7 @@ public class AppConfig
 		//public static String lastMonthLeases = "Select  Company,buildingabbreviation,LeaseName from [Automation].[leaseAuditAutomation] where notes = 'Values did not match'";
 		public static String connectionUrl = "jdbc:sqlserver://azrsrv001.database.windows.net;databaseName=HomeRiverDB;user=service_sql02;password=xzqcoK7T;encrypt=true;trustServerCertificate=true;";
 	    public static String downloadFilePath = "C:\\SantoshMurthyP\\Lease Audit Automation";
-	    public static String[] LeaseAgreementFileNames = {"RT Renewal Signed","RT-RENEWAL","RT - RENEWAL","RT_Full_Lease","Full Lease -","RENEWAL","renewal_","Renewal","Full_Lease","Full"};
+	    public static String[] LeaseAgreementFileNames = {"RT Renewal Signed","RT-RENEWAL","RT - RENEWAL","RT_Full_Lease","Full Lease -","IAG_full_lease","-IAG_FULL_LEASE","-IAG_full_lease","IAG-[Full_Lease_Renewal]","IAG-PRX-[Full_Lease_Renewal]","IAG_Full_Lease_Renewal","RENEWAL","renewal_","Renewal","Full_Lease","Full"};
 	    
 	    public static String leasePageURL = "https://app.propertyware.com/pw/leases/lease_detail.do?entityID=";
 	    
