@@ -240,5 +240,74 @@ public class DataBase
 			return "Error";
 		}
 	}
+	
+	public static boolean getCompletedBuildingsList()
+	{
+		try
+		{
+		        Connection con = null;
+		        Statement stmt = null;
+		        ResultSet rs = null;
+		            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		            con = DriverManager.getConnection(AppConfig.connectionUrl);
+		            String SQL = AppConfig.getBuildingsWithStatusforCurrentDay;
+		            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		           // stmt = con.createStatement();
+		            rs = stmt.executeQuery(SQL);
+		            int rows =0;
+		            if (rs.last()) {
+		            	rows = rs.getRow();
+		            	// Move to beginning
+		            	rs.beforeFirst();
+		            }
+		            System.out.println("No of buildings with status = "+rows);
+		            RunnerClass.completedBuildingList = new String[rows][7];
+		           int  i=0;
+		            while(rs.next())
+		            {
+		            	
+		            	String 	ID =  String.valueOf(rs.getObject(1));
+		                String  company = (String) rs.getObject(2);
+		                String  Building = (String) rs.getObject(3);
+		                String  LeaseName = (String) rs.getObject(4);
+		                String  LeaseEntityID = String.valueOf(rs.getObject(5));
+		                String  AutomationStatus = (String) rs.getObject(6);
+		                String  AutomationNotes = (String) rs.getObject(7);
+		                
+		                System.out.println(ID +" | "+company+" | "+Building+" | "+LeaseName+" | "+LeaseEntityID+" | "+AutomationStatus+" | "+AutomationNotes);
+		    				//Company
+		    				RunnerClass.completedBuildingList[i][0] = ID;
+		    				//Port folio
+		    				RunnerClass.completedBuildingList[i][1] = company;
+		    				//Third Party Unit ID
+		    				RunnerClass.completedBuildingList[i][2] = Building;
+		    				//Lease Name
+		    				RunnerClass.completedBuildingList[i][3] = LeaseName;
+		    				//Target Deposit
+		    				RunnerClass.completedBuildingList[i][4] = LeaseEntityID;
+		    				//Listing Agent
+		    				RunnerClass.completedBuildingList[i][5] = AutomationStatus;
+		    				//Status
+		    				RunnerClass.completedBuildingList[i][6] = AutomationNotes;
+		    				
+		    				i++;
+		            }	
+		           // System.out.println("Total Pending Buildings  = " +RunnerClass.pendingBuildingList.length);
+		            //for(int j=0;j<RunnerClass.pendingBuildingList.length;j++)
+		            //{
+		            //	System.out.println(RunnerClass.pendingBuildingList[j][j]);
+		           // }
+		            rs.close();
+		            stmt.close();
+		            con.close();
+		 return true;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+		 return false;
+		}
+	}
+
 
 }

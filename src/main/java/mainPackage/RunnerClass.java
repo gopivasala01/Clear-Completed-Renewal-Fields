@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,12 +26,10 @@ import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import DataReader.ReadingLeaseAgreements;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class RunnerClass {
@@ -40,7 +37,7 @@ public class RunnerClass {
 	public static Alert alert;
 
 	public static ChromeOptions options;
-	public static String[][] pendingBuildingList;
+	public static String[][] completedBuildingList;
 	public static int updateStatus;
 	public static String[] statusList;
 	public static String currentDate = "";
@@ -85,7 +82,6 @@ public class RunnerClass {
 			Thread.sleep(2000);
 			driver.findElement(Locators.signMeIn).click();
 			Thread.sleep(3000);
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
 			try {
 				if (driver.findElement(Locators.loginError).isDisplayed()) {
@@ -250,7 +246,15 @@ public class RunnerClass {
 		}
 
 	}
-	
+	@AfterSuite
+    public void sendMail(){
+    	try {
+			CreateExcelandSendMail.createExcelFileWithProcessedData();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 	
     // Getter method for autoCharges
     public static String[][] getautoCharges() {
@@ -571,5 +575,9 @@ public class RunnerClass {
 		}
 		return pendingRenewalLeases;
 	}
+	
+	
+	
+	
 
 }
