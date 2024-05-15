@@ -36,7 +36,7 @@ public class AppConfig
 		   
 		   public static String mailSubject = "Renewal Proration Rents Update -  ";
 		   
-		   public static String excelFileLocation = "C:\\SantoshMurthyP\\Lease Audit Automation\\Excel File";
+		   public static String excelFileLocation = "C:\\SantoshMurthyP\\Excel File";
 		   
 		  // public static String getAutoCharges = "Select ChargeCode, Amount, autoCharge_StartDate,EndDate,Description from automation.LeaseCloseOutsChargeChargesConfiguration_"+RunnerClass.buildingAbbreviation+" Where  AutoCharge=1";
 		   

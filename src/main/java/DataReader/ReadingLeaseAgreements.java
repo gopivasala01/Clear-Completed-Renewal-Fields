@@ -40,7 +40,15 @@ public class ReadingLeaseAgreements {
 		boolean residentBenefitsPackageTaxAvailabilityCheck=false;
 		String residentBenefitsPackageTaxAmount="";
 		boolean RBPOptOutAddendumCheck = false;
-
+		String increasedRent_amount="";
+		String increasedRent_newStartDate="";
+		boolean incrementRentFlag=false;
+		String increasedRent_previousRentEndDate="";
+		
+		List<String> allIncreasedRent_StartDate=new ArrayList();
+		
+		
+		List<String> allIncreasedRent_amounts=new ArrayList();
 		
 	
 	
@@ -158,6 +166,55 @@ public class ReadingLeaseAgreements {
 				
 			}
 
+			try {
+				allIncreasedRent_amounts = dataExtractionClass.getMultipleValues(text, "Monthly Rent:^Monthly Rent due in the amount of^@Monthly Rent:^Tenant will pay Landlord monthly rent in the amount of^@monthly installments,^on or before the 1st day of each month, in the amount of^@monthly installments,^Tenant will pay Landlord monthly rent in the amount of^") ;
+				if (allIncreasedRent_amounts.size() > 1) {
+					incrementRentFlag = true;
+					System.out.println("Increment Rent Flag = "+ incrementRentFlag);
+					GetterAndSetterClass.setIncrementRentFlag(incrementRentFlag);
+					GetterAndSetterClass.setIncreasedRentAmounts((ArrayList<String>) allIncreasedRent_amounts);
+		            //double firstValue = Double.parseDouble(allIncreasedRent_amounts.get(0).replace(",",""));
+		           
+		            allIncreasedRent_StartDate = dataExtractionClass.getMultipleDates(text, "Monthly Rent:^Month");
+		            GetterAndSetterClass.setIncreasedRentDates((ArrayList<String>) allIncreasedRent_StartDate);
+		              }
+		            
+				else {
+					GetterAndSetterClass.setIncrementRentFlag(incrementRentFlag);
+					GetterAndSetterClass.setIncreasedRent_amount("Error");
+					
+				}
+				
+			/*	increasedRent_previousRentEndDate =  dataExtractionClass.getDates(text,"Monthly Rent:^to Month");
+				if(!increasedRent_previousRentEndDate.equalsIgnoreCase("Error")) {
+					GetterAndSetterClass.setIncreasedRent_previousRentEndDate(increasedRent_previousRentEndDate);
+				}
+				else {
+					GetterAndSetterClass.setIncreasedRent_previousRentEndDate("Error");
+				}	*/
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				GetterAndSetterClass.setIncrementRentFlag(false);
+				GetterAndSetterClass.setIncreasedRent_amount("Error");
+				System.out.println("Error While Extracting Increment Rent Details");
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			try {
 				residentBenefitsPackageAvailabilityCheck = dataExtractionClass.getFlags(text,"rent:^Resident Benefits Package (�RBP�) Program and Fee:@rent:^Resident Benefits Package (RBP) Lease Addendum@rent:^Resident Benefits Package Opt\\-Out Addendum");
 				System.out.println("resident benefit package Availability Flag = "+ residentBenefitsPackageAvailabilityCheck); 

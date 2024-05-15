@@ -158,16 +158,36 @@ public class PropertyWare_updateValues
 			    }
 				else
 				{
-					GetterAndSetterClass.setOldLeaseStartDate_ProrateRent(RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(), 0));
-					GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(RunnerClass.dateMinusOneDay(GetterAndSetterClass.getStartDate()));
-					GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate()));
-			    	
-					if(!GetterAndSetterClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
-						GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getresidentBenefitsPackage()));
+					if(GetterAndSetterClass.getIncrementRentFlag() == true) {
+						GetterAndSetterClass.setOldLeaseStartDate_ProrateRent(RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(), 0));
+						GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(RunnerClass.dateMinusOneDay(GetterAndSetterClass.getStartDate()));
+						GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate()));
+						GetterAndSetterClass.setprorateEscalationStartDate(GetterAndSetterClass.getIncreasedRentDates().get(2));
+						GetterAndSetterClass.setprorateEscalationEndDate(GetterAndSetterClass.getIncreasedRentDates().get(3));
+				    	
+						if(!GetterAndSetterClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getresidentBenefitsPackage()));
+						}
+						if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
+						}
+						if(!(GetterAndSetterClass.getIncreasedRentAmounts().get(1)).equalsIgnoreCase("") || !(GetterAndSetterClass.getIncreasedRentAmounts().get(1)).equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setprorateEscalationAmount(GetterAndSetterClass.getIncreasedRentAmounts().get(1));  
+						}
 					}
-					if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
-						GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
+					else {
+						GetterAndSetterClass.setOldLeaseStartDate_ProrateRent(RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(), 0));
+						GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(RunnerClass.dateMinusOneDay(GetterAndSetterClass.getStartDate()));
+						GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate()));
+				    	
+						if(!GetterAndSetterClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getresidentBenefitsPackage()));
+						}
+						if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
+						}
 					}
+				
 				}
 				
 			}
@@ -188,7 +208,7 @@ public class PropertyWare_updateValues
 			try {
 				
 				String query ="";
-				for(int i=1;i<=3;i++)
+				for(int i=1;i<=4;i++)
 				{
 					switch(i)
 					{
@@ -201,6 +221,9 @@ public class PropertyWare_updateValues
 					case 3: 
 						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateMonthlyRent()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=16";
 					    break;
+					case 4: 
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getprorateEscalationAmount()+"',StartDate='"+GetterAndSetterClass.getprorateEscalationStartDate()+"',EndDate='"+GetterAndSetterClass.getprorateEscalationEndDate()+"',Flag = '' where ID=17";
+					    break;  
 					}
 					
 				}
@@ -240,6 +263,12 @@ public class PropertyWare_updateValues
 					}
 					DataBase.updateTable(query1);
 					
+					if(GetterAndSetterClass.getIncrementRentFlag() == true) {
+						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (17)";
+						DataBase.updateTable(query1);
+					}
+					
+					
 				}
 			}
 			else {
@@ -247,7 +276,7 @@ public class PropertyWare_updateValues
 				failedReason =  failedReason+","+"Renewal Status is "+GetterAndSetterClass.getRenewalStatusValue();
 				GetterAndSetterClass.setFailedReason(failedReason);
 				return false;
-			}
+			} 
 			return true;
 		}
 		

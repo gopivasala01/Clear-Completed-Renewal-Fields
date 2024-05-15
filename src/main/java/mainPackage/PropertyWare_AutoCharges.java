@@ -116,8 +116,8 @@ public class PropertyWare_AutoCharges
 					actions.moveToElement(driver.findElement(Locators.saveLease)).click(driver.findElement(Locators.saveLease)).build().perform();
 				  else
 					actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
-	  Thread.sleep(2000);
-			return true;
+			 Thread.sleep(2000);
+			 return true;
 	      }
 	      catch(Exception e)
 	      {

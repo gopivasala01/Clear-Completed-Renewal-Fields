@@ -110,8 +110,7 @@ public class RunnerClass {
 
 		try {
 			FileUtils.cleanDirectory(new File(AppConfig.downloadFilePath));
-		} catch (Exception e) {
-		} 
+		} catch (Exception e) {} 
 		
 		if (company.equals("Chicago PFW"))
 			company = "Chicago";
@@ -229,11 +228,12 @@ public class RunnerClass {
 				GetterAndSetterClass.setOldLeaseEndDate_ProrateRent(null);
 				GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(null);
 				GetterAndSetterClass.setProrateResidentBenefitPackage(null);  //For other portfolios, it should be added as second full month in Auto Charges 
-				
-				
-	
-				
-			
+				GetterAndSetterClass.setprorateEscalationStartDate(null);
+				GetterAndSetterClass.setprorateEscalationEndDate(null);
+				GetterAndSetterClass.setprorateEscalationAmount(null);
+				GetterAndSetterClass.setIncrementRentFlag(false);
+				GetterAndSetterClass.setIncreasedRentAmounts(null);
+				 GetterAndSetterClass.setIncreasedRentDates(null);
 				setautoCharges(null);
 				try
 				{
@@ -251,7 +251,7 @@ public class RunnerClass {
     	try {
 			CreateExcelandSendMail.createExcelFileWithProcessedData();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
     }
@@ -570,7 +570,7 @@ public class RunnerClass {
 		try {
 			DataBase.getBuildingsList();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return pendingRenewalLeases;

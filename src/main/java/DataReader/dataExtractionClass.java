@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mainPackage.AppConfig;
+import mainPackage.RunnerClass;
 
 
 
@@ -152,38 +153,30 @@ public class dataExtractionClass {
     }
 	
 	
-	public static String getSecondDate(String text, String values,int recurrence) {
-	    try {
-	        String datevalue = values;
-	        String[] data = datevalue.split("\\@");
-	        for (int i = 0; i < data.length; i++) {
-	            String subStringValue = data[i].split("\\^")[0].toLowerCase();
-	            String priorText = data[i].split("\\^")[1].toLowerCase();
-	            String patternString = priorText + "\\s*(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2}(?:,\\s*\\d{4})?";
-	            try {
+	public static List<String> getMultipleDates(String text, String value) {
+	   
+	    	 List<String> dates = new ArrayList<>();
+	    	 String[] data = value.split("\\@");
+	         for (String datum : data) {
+	             String subStringValue = datum.split("\\^")[0].toLowerCase();
+	             String priorText = datum.split("\\^")[1].toLowerCase();
+	             String patternString = priorText + "\\s*(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2}(?:,\\s*\\d{4})?";
+	             //String patternString = priorText + "\\s*(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2},\\s*\\d{4}";
+	             try {
 	                String modifiedtext = text.substring(text.indexOf(subStringValue));
 	                Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
 	                Matcher matcher = pattern.matcher(modifiedtext);
 
-	                // Track the number of matches found
-	                int matchCount = 0;
-	                while (matcher.find()) {
-	                    matchCount++;
-	                    // If it's the second match, return it
-	                    if (matchCount == recurrence) {
-	                        return matcher.group().replaceFirst(priorText, "").trim();
-	                    }
+	                while(matcher.find()) {
+	                	dates.add(RunnerClass.convertDate(matcher.group().replaceFirst(priorText, "").trim())); // Group 1 contains the matched amount
 	                }
 	            } catch (Exception e) {
 	                continue;
 	            }
 	        }
-	    } catch (Exception e) {
-	        //e.printStackTrace();
-	        return "Error";
-	    }
+	  
 
-	    return "Error";
+	    return dates;
 	}
 	
 	public static boolean getFlags(String text,String getFlags) {

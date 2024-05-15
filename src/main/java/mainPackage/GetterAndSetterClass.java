@@ -1,5 +1,8 @@
 package mainPackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GetterAndSetterClass {
 	
 
@@ -23,8 +26,11 @@ public class GetterAndSetterClass {
 	private static ThreadLocal<String> prorateRentDateThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<Boolean> residentBenefitsPackageAvailabilityCheckThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> residentBenefitsPackageThreadLocal = new ThreadLocal<>();
-	
-	
+	private static ThreadLocal<Boolean> incrementRentFlagThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> increasedRent_amountThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> prorateEscalationStartDateThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> prorateEscalationEndDateThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> prorateEscalationAmountThreadLocal = new ThreadLocal<>();
 	
 	private static ThreadLocal<String> arizonaCityFromBuildingAddressThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> arizonaRentCodeThreadLocal = new ThreadLocal<>();
@@ -44,6 +50,27 @@ public class GetterAndSetterClass {
 	private static ThreadLocal<String> prorateResidentBenefitPackageThreadLocal = new ThreadLocal<>();  //For other portfolios, it should be added as second full month in Auto Charges 
 	private static ThreadLocal<String> prorateMonthlyRentThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> renewalStatusValueThreadLocal = new ThreadLocal<>();
+	
+	
+	private static ThreadLocal<ArrayList<String>> increasedRentAmounts = ThreadLocal.withInitial(ArrayList::new);
+	private static ThreadLocal<ArrayList<String>> increasedRentDates = ThreadLocal.withInitial(ArrayList::new);
+	
+	
+	
+	public static ArrayList<String> getIncreasedRentAmounts() {
+        return increasedRentAmounts.get();
+    }
+	
+	public static void setIncreasedRentAmounts(ArrayList<String> allIncreasedRent_amounts) {
+		increasedRentAmounts.set(allIncreasedRent_amounts);
+    }
+	public static ArrayList<String> getIncreasedRentDates() {
+        return increasedRentDates.get();
+    }
+	
+	public static void setIncreasedRentDates(ArrayList<String> allIncreasedRent_StartDate) {
+		increasedRentDates.set(allIncreasedRent_StartDate);
+    }
 	
 	
 	
@@ -108,6 +135,36 @@ public class GetterAndSetterClass {
 
 	public static void setProrateRent(String prorateRent) {
 		prorateRentThreadLocal.set(prorateRent);
+	}
+	public static String getprorateEscalationStartDate() {
+		if(prorateEscalationStartDateThreadLocal.get()==null)
+			return "Error";
+		else
+		 return prorateEscalationStartDateThreadLocal.get();
+	}
+
+	public static void setprorateEscalationStartDate(String prorateEscalationStartDate) {
+		prorateEscalationStartDateThreadLocal.set(prorateEscalationStartDate);
+	}
+	public static String getprorateEscalationEndDate() {
+		if(prorateEscalationEndDateThreadLocal.get()==null)
+			return "Error";
+		else
+		 return prorateEscalationEndDateThreadLocal.get();
+	}
+
+	public static void setprorateEscalationEndDate(String prorateEscalationEndDate) {
+		prorateEscalationEndDateThreadLocal.set(prorateEscalationEndDate);
+	}
+	public static String getprorateEscalationAmount() {
+		if(prorateEscalationAmountThreadLocal.get()==null)
+			return "Error";
+		else
+		 return prorateEscalationAmountThreadLocal.get();
+	}
+
+	public static void setprorateEscalationAmount(String prorateEscalationAmount) {
+		prorateEscalationAmountThreadLocal.set(prorateEscalationAmount);
 	}
 	
 	public static String getProrateRentDate() {
@@ -215,9 +272,27 @@ public class GetterAndSetterClass {
 		RBPNoChangeRequiredThreadLocal.set(RBPNoChangeRequired);
 	}
 	
+	public static boolean getIncrementRentFlag() {
+		if(incrementRentFlagThreadLocal.get()==null)
+			return false;
+		else
+		 return incrementRentFlagThreadLocal.get();
+	}
+	public static void setIncrementRentFlag(boolean incrementRentFlag) {
+		incrementRentFlagThreadLocal.set(incrementRentFlag);
+	}
+	public static void setIncreasedRent_amount(String increasedRent_amount) {
+		increasedRent_amountThreadLocal.set(increasedRent_amount);
+	}
 	
+	public static String getIncreasedRent_amount() {
+		if(increasedRent_amountThreadLocal.get()==null)
+			return "Error";
+		else
+		 return increasedRent_amountThreadLocal.get();
+	}
 	
-	
+
 	
 	
 	
