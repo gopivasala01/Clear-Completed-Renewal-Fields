@@ -141,8 +141,22 @@ public class PropertyWare {
 					}
 				}
 				if (leaseSelected == true) {
+					String status = driver.findElement(Locators.status).getText();
+					if(status.equalsIgnoreCase("ACTIVE") || status.equalsIgnoreCase("Active - Month to Month") || status.equalsIgnoreCase("Active - TTO") || status.equalsIgnoreCase("Active - Notice Given")){
+						GetterAndSetterClass.setleaseStatus(true);
+			        	System.out.println("Status = " + status);
+			        	//RunnerClass.failedReason = "Lease is Active";
+			        	return true;
+			        }
+			        else {
+			        	GetterAndSetterClass.setleaseStatus(false);
+			        	System.out.println("Status = " + status);
+			        	failedReason = "Lease is not Active";
+			        	GetterAndSetterClass.setFailedReason(failedReason);
+			        	return false;
+			        }
 
-					return true;
+					
 				}
 			}
 			if (leaseSelected == false) {
@@ -206,7 +220,7 @@ public class PropertyWare {
 					String filename = null;
 					for (int i = 0; i < documents.size(); i++) {
 						for (int j = 0; j < AppConfig.LeaseAgreementFileNames.length; j++) {
-							if ((documents.get(i).getText().trim().startsWith(AppConfig.LeaseAgreementFileNames[j]) || documents.get(i).getText().trim().contains("Renewal_Lease") || documents.get(i).getText().trim().contains("Renewal Lease"))
+							if ((documents.get(i).getText().trim().startsWith(AppConfig.LeaseAgreementFileNames[j]) || documents.get(i).getText().trim().contains("Renewal_Lease") || documents.get(i).getText().trim().contains("Renewal Lease") || (documents.get(i).getText().trim().startsWith("IAG_") && documents.get(i).getText().trim().contains("Renewal_")))
 									&& !documents.get(i).getText().trim().contains("Termination")
 									&& !documents.get(i).getText().trim().contains("_Mod")
 									&& !documents.get(i).getText().trim().contains("_MOD")
@@ -303,8 +317,21 @@ public class PropertyWare {
 			String buildingPageURL = AppConfig.leasePageURL + LeaseEntityID;
 			driver.navigate().to(buildingPageURL);
 			PropertyWare.intermittentPopUp(driver);
-
-			return true;
+			 String status = driver.findElement(Locators.status).getText();
+			if(status.equalsIgnoreCase("ACTIVE") || status.equalsIgnoreCase("Active - Month to Month") || status.equalsIgnoreCase("Active - TTO") || status.equalsIgnoreCase("Active - Notice Given")){
+				GetterAndSetterClass.setleaseStatus(true);
+	        	System.out.println("Status = " + status);
+	        	//RunnerClass.failedReason = "Lease is Active";
+	        	return true;
+	        }
+	        else {
+	        	GetterAndSetterClass.setleaseStatus(false);
+	        	System.out.println("Status = " + status);
+	        	failedReason = "Lease is not Active";
+	        	GetterAndSetterClass.setFailedReason(failedReason);
+	        	return false;
+	        }
+			
 		}
 
 		catch (Exception e) {
@@ -354,5 +381,7 @@ public class PropertyWare {
 		}
 
 	}
+	
+	
 
 }

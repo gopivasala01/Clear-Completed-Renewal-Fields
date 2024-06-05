@@ -32,6 +32,7 @@ public class Locators
     public static By documentsList = By.xpath("//*[@id='documentHolderBody']/tr/td[1]/a"); 
     public static By searchedLeaseCompanyHeadings = By.xpath("//*[@id='eqsResult']/div/div/h1");
     public static By checkPortfolioType = By.xpath("//*[@title='Click to jump to portfolio']");
+    public static By status = By.xpath("//*[@id='infoTable']/tbody/tr[6]/td[2]");
     
     public static By scheduleMaintananceIFrame = By.xpath("//iframe[@srcdoc='<meta name=\"referrer\" content=\"origin\" />']");
     public static By scheduleMaintanancePopUp2 = By.xpath("//section[@role='dialog']");
@@ -59,6 +60,7 @@ public class Locators
     public static By autoCharge_Description = By.name("charge.description");
     public static By autoCharge_List = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[1]");
     public static By autoCharge_List_Amounts = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[3]");
+    public static By autoCharge_List_StartDates = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[5]");
     public static By autoCharge_List_EndDates = By.xpath("//*[@id='autoChargesTable']/tbody/tr/td[6]");
     public static By autoCharge_StartDate = By.name("charge.startDateAsString");
     public static By autoCharge_EndDate = By.name("charge.endDateAsString");

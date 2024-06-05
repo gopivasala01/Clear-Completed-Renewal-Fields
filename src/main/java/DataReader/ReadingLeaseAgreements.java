@@ -168,7 +168,7 @@ public class ReadingLeaseAgreements {
 
 			try {
 				allIncreasedRent_amounts = dataExtractionClass.getMultipleValues(text, "Monthly Rent:^Monthly Rent due in the amount of^@Monthly Rent:^Tenant will pay Landlord monthly rent in the amount of^@monthly installments,^on or before the 1st day of each month, in the amount of^@monthly installments,^Tenant will pay Landlord monthly rent in the amount of^") ;
-				if (allIncreasedRent_amounts.size() > 1) {
+				if (allIncreasedRent_amounts.size() > 1 && (!allIncreasedRent_amounts.get(1).equalsIgnoreCase("0.00"))) {
 					incrementRentFlag = true;
 					System.out.println("Increment Rent Flag = "+ incrementRentFlag);
 					GetterAndSetterClass.setIncrementRentFlag(incrementRentFlag);

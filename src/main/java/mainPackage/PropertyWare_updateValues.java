@@ -92,7 +92,7 @@ public class PropertyWare_updateValues
 			if(PropertyWare_updateValues.addingValuesToTable(company,buildingAbbreviation,SNo)==false) {
 				return false;
 			}
-			if(PropertyWare_updateValues.decideMoveInAndAutoCharges(company,buildingAbbreviation,SNo) == false) {
+			if(PropertyWare_updateValues.decideMoveInAndAutoCharges(driver,company,buildingAbbreviation,SNo) == false) {
 				return false;
 			}
 				
@@ -115,7 +115,10 @@ public class PropertyWare_updateValues
 			String firstFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),1);
 			String secondFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),2);
 		*/	
-			
+				String lastDayOfTheStartDate = RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate());
+				GetterAndSetterClass.setlastDayOfTheStartDate(lastDayOfTheStartDate);
+				String firstFullMonth = RunnerClass.firstDayOfMonth(GetterAndSetterClass.getStartDate(),1);
+				GetterAndSetterClass.setFirstFullMonth(firstFullMonth);
 				driver.navigate().refresh();
 				PropertyWare.intermittentPopUp(driver);
 				driver.findElement(Locators.summaryEditButton).click();
@@ -243,16 +246,33 @@ public class PropertyWare_updateValues
 			
 		}
 		
-		public static boolean decideMoveInAndAutoCharges(String company,String buildingAbbreviation,String SNo)
+		public static boolean decideMoveInAndAutoCharges(WebDriver driver,String company,String buildingAbbreviation,String SNo) throws Exception
 		{
+			Actions actions = new Actions(driver);
 			String failedReason ="";
 			String query1="";
-			if(GetterAndSetterClass.getRenewalStatusValue().toLowerCase().contains("charge renewal fee - annual")) {
+			if(GetterAndSetterClass.getRenewalStatusValue().toLowerCase().contains("close out coordinator review")) {
 				if(GetterAndSetterClass.getProrateRent().equalsIgnoreCase("Error")||GetterAndSetterClass.getProrateRent().equalsIgnoreCase("0.00")) {
-					System.out.println("Prorate Rent Error or 0");
-					failedReason =  failedReason+","+"Prorate Rent Error ";
-					GetterAndSetterClass.setFailedReason(failedReason);
-					return false;
+						getRBPISChanged(driver);
+						Thread.sleep(1000);
+						
+					
+					if(GetterAndSetterClass.getOldRBPAmount().equalsIgnoreCase("Error")) {
+						actions.moveToElement(driver.findElement(Locators.renewalStatus)).build().perform();
+						Select select = new Select(driver.findElement(Locators.renewalStatus));
+						Thread.sleep(500);
+						select.selectByVisibleText("RW-4a: CHARGE RENEWAL FEE - ANNUAL");
+						System.out.println("Prorate Rent and RBP Error or 0");
+						failedReason =  failedReason+","+"Prorate Rent/RBP Error";
+						GetterAndSetterClass.setFailedReason(failedReason);
+						return false;
+					}
+					else {
+						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14)";
+						DataBase.updateTable(query1);
+					}
+					actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
+					
 				}
 				else {
 					if(GetterAndSetterClass.getresidentBenefitsPackageAvailabilityCheckFlag()==true) {
@@ -266,19 +286,56 @@ public class PropertyWare_updateValues
 					if(GetterAndSetterClass.getIncrementRentFlag() == true) {
 						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (17)";
 						DataBase.updateTable(query1);
-					}
+					} 
 					
 					
 				}
 			}
 			else {
-				System.out.println("Renewal Status is not charge renewal fee - annual");
+				System.out.println("Renewal Status is not close out coordinator review");
 				failedReason =  failedReason+","+"Renewal Status is "+GetterAndSetterClass.getRenewalStatusValue();
 				GetterAndSetterClass.setFailedReason(failedReason);
 				return false;
 			} 
 			return true;
+		} 
+		
+		public static void getRBPISChanged(WebDriver driver) {
+			Actions actions = new Actions(driver);
+			JavascriptExecutor js = (JavascriptExecutor)driver;
+			try {
+				driver.navigate().refresh();
+				PropertyWare.intermittentPopUp(driver);
+				driver.findElement(Locators.summaryEditButton).click();
+				Thread.sleep(2000);
+				//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+				actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
+				boolean newChargeChanges = false;
+				List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
+				List<WebElement> startDates = driver.findElements(Locators.autoCharge_List_StartDates);
+				List<WebElement> endDates = driver.findElements(Locators.autoCharge_List_EndDates);
+				List<WebElement> existingAmounts = driver.findElements(Locators.autoCharge_List_Amounts);
+				for (int i = 0; i < existingAutoCharges.size(); i++) {
+				    String autoChargeText = existingAutoCharges.get(i).getText().replaceAll("[.]", "");
+				    String startDateText = startDates.get(i).getText(); 
+				    String endDateText = endDates.get(i).getText(); 
+				    String amount = existingAmounts.get(i).getText();
+				    if (autoChargeText.contains("43070 - Resident Benefit") && endDateText.trim().isEmpty() && GetterAndSetterClass.getFirstFullMonth().equalsIgnoreCase(startDateText) && amount.replace("$", "").equalsIgnoreCase(GetterAndSetterClass.getresidentBenefitsPackage()) ) {
+				    	//GetterAndSetterClass.setRBPNoChangeRequired(true);
+				    	newChargeChanges = true;
+				        continue; // No need to continue once the condition is met
+				    }
+				    if(newChargeChanges == true && autoChargeText.contains("43070 - Resident Benefit") && GetterAndSetterClass.getlastDayOfTheStartDate().trim().equalsIgnoreCase(endDateText.trim())) {
+				    	GetterAndSetterClass.setOldRBPAmount(amount);
+				    }
+				}
+			}
+			catch(Exception e) {
+				
+			}
 		}
+		
+		
 		
 		
 		public static void getRentCodeForArizona(WebDriver driver) throws Exception

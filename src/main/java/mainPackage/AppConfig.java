@@ -12,15 +12,15 @@ public class AppConfig
 		public static String pdfImage = "C:\\SantoshMurthyP\\Tessaract Images\\";
 		
 	
-	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE()-1 AS DATE) and AutomationStatus = 'Pending' ";
+	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE() AS DATE) and AutomationStatus = 'Pending' ";
 			   //"Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Florida'  order by id asc";
 	   //public static String lastMonthLeases1 = "Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Alabama'  order by id asc";
 		//public static String lastMonthLeases = "Select  Company,buildingabbreviation,LeaseName from [Automation].[leaseAuditAutomation] where notes = 'Values did not match'";
-	    public static String getBuildingsWithStatusforCurrentDay = "Select ID,Company,Building,LeaseName,LeaseEntityID,AutomationStatus,AutomationNotes from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE()-1 AS DATE)";
+	    public static String getBuildingsWithStatusforCurrentDay = "Select ID,Company,Building,LeaseName,LeaseEntityID,AutomationStatus,AutomationNotes from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE() AS DATE)";
 	    
 	    public static String connectionUrl = "jdbc:sqlserver://azrsrv001.database.windows.net;databaseName=HomeRiverDB;user=service_sql02;password=xzqcoK7T;encrypt=true;trustServerCertificate=true;";
 	    public static String downloadFilePath = "C:\\SantoshMurthyP\\Lease Audit Automation";
-	    public static String[] LeaseAgreementFileNames = {"RT Renewal Signed","RT-RENEWAL","RT - RENEWAL","RT_Full_Lease","Full Lease -","IAG_full_lease","-IAG_FULL_LEASE","-IAG_full_lease","IAG-[Full_Lease_Renewal]","IAG-PRX-[Full_Lease_Renewal]","IAG_Full_Lease_Renewal","RENEWAL","renewal_","Renewal","Full_Lease","Full"};
+	    public static String[] LeaseAgreementFileNames = {"RT Renewal Signed","RT RENEWAL SIGNED","RT_Renewal SIGNED","RT-RENEWAL","RT - RENEWAL","RT_Full_Lease","Full Lease -","IAG_full_lease","-IAG_FULL_LEASE","-IAG_full_lease","IAG-[Full_Lease_Renewal]","IAG-PRX-[Full_Lease_Renewal]","IAG_Full_Lease_Renewal","RENEWAL","renewal_","Renewal","Full_Lease","Full"};
 	    
 	    public static String leasePageURL = "https://app.propertyware.com/pw/leases/lease_detail.do?entityID=";
 	    
@@ -31,7 +31,7 @@ public class AppConfig
 		   public static String fromEmail = "bireports@beetlerim.com";
 		   public static String fromEmailPassword = "Welcome@123";
 		   
-		   public static String toEmail ="gopi.v@beetlerim.com,naveen.p@beetlerim.com";
+		   public static String toEmail ="gopi.v@beetlerim.com,naveen.p@beetlerim.com";//"samay@homeriver.com"
 		   public static String CCEmail = "naveen.p@beetlerim.com";
 		   
 		   public static String mailSubject = "Renewal Proration Rents Update -  ";

@@ -15,10 +15,13 @@ public class GetterAndSetterClass {
 	private static ThreadLocal<String> endDateInPWThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<Boolean> RBPOptOutAddendumCheckThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<Boolean> RBPNoChangeRequiredThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> oldRBPAmountThreadLocal = new ThreadLocal<>();
 	
 	
 	private static ThreadLocal<String> startDateThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> endDateThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> FirstFullMonthThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<String> lastDayOfTheStartDateThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> monthlyRentThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> monthlyRentTaxAmountThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<Boolean> monthlyRentTaxFlagThreadLocal = new ThreadLocal<>();
@@ -31,6 +34,8 @@ public class GetterAndSetterClass {
 	private static ThreadLocal<String> prorateEscalationStartDateThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> prorateEscalationEndDateThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> prorateEscalationAmountThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<Boolean> leaseStatusThreadLocal = new ThreadLocal<>();
+	
 	
 	private static ThreadLocal<String> arizonaCityFromBuildingAddressThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> arizonaRentCodeThreadLocal = new ThreadLocal<>();
@@ -94,6 +99,27 @@ public class GetterAndSetterClass {
 	public static void setEndDate(String endDate) {
 		endDateThreadLocal.set(endDate);
 	}
+	
+	public static String getFirstFullMonth() {
+		if(FirstFullMonthThreadLocal.get()==null)
+			return "Error";
+		else
+		 return FirstFullMonthThreadLocal.get();
+	}
+	public static void setFirstFullMonth(String firstFullMonth) {
+		FirstFullMonthThreadLocal.set(firstFullMonth);
+	}
+	
+	public static String getlastDayOfTheStartDate() {
+		if(lastDayOfTheStartDateThreadLocal.get()==null)
+			return "Error";
+		else
+		 return lastDayOfTheStartDateThreadLocal.get();
+	}
+	public static void setlastDayOfTheStartDate(String lastDayOfTheStartDate) {
+		lastDayOfTheStartDateThreadLocal.set(lastDayOfTheStartDate);
+	}
+	
 	
 	public static String getMonthlyRent() {
 		if(monthlyRentThreadLocal.get()==null)
@@ -271,6 +297,17 @@ public class GetterAndSetterClass {
 	public static void setRBPNoChangeRequired(boolean RBPNoChangeRequired) {
 		RBPNoChangeRequiredThreadLocal.set(RBPNoChangeRequired);
 	}
+	public static void setOldRBPAmount(String oldRBPAmount) {
+		oldRBPAmountThreadLocal.set(oldRBPAmount);
+	}
+	
+	public static String getOldRBPAmount() {
+		if(oldRBPAmountThreadLocal.get()==null)
+			return "Error";
+		else
+		 return oldRBPAmountThreadLocal.get();
+	}
+	
 	
 	public static boolean getIncrementRentFlag() {
 		if(incrementRentFlagThreadLocal.get()==null)
@@ -358,7 +395,15 @@ public class GetterAndSetterClass {
 		 return statusIDThreadLocal.get();
 	}
 	
-	
+	public static boolean getleaseStatus() {
+		if(leaseStatusThreadLocal.get()==null)
+			return false;
+		else
+		 return leaseStatusThreadLocal.get();
+	}
+	public static void setleaseStatus(boolean leaseStatus) {
+		leaseStatusThreadLocal.set(leaseStatus);
+	}
 	
 	
 	

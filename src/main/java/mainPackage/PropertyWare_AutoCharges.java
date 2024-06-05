@@ -29,20 +29,12 @@ public class PropertyWare_AutoCharges
 			actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
 			
 			List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
-			List<WebElement> endDates = driver.findElements(Locators.autoCharge_List_EndDates);
-			List<WebElement> existingAmounts = driver.findElements(Locators.autoCharge_List_Amounts);
-			for (int i = 0; i < existingAutoCharges.size(); i++) {
-			    String autoChargeText = existingAutoCharges.get(i).getText().replaceAll("[.]", "");
-			    String endDateText = endDates.get(i).getText();
-			    String amount = existingAmounts.get(i).getText();
-			    if (autoChargeText.contains("43070 - Resident Benefit") && endDateText.trim().isEmpty() && amount.replace("$", "").equalsIgnoreCase(GetterAndSetterClass.getresidentBenefitsPackage()) ) {
-			    	GetterAndSetterClass.setRBPNoChangeRequired(true);
-			        break; // No need to continue once the condition is met
-			    }
-			}
+		
+			
 			
 			//List<WebElement> startDates = driver.findElements(Locators.autoCharge_List_startDates);
 			//List<WebElement> endDates = driver.findElements(Locators.autoCharge_List_EndDates);
+			boolean saveError = false;
 			for(int i=0;i<RunnerClass.getautoCharges().length;i++)
 			{
 				boolean availabilityCheck = false;
@@ -51,7 +43,14 @@ public class PropertyWare_AutoCharges
 				String startDate = RunnerClass.getautoCharges()[i][2];
 				String endDate = RunnerClass.getautoCharges()[i][3];
 				String description = RunnerClass.getautoCharges()[i][4];
-				
+				if(chargeCode.equalsIgnoreCase("40010 - Rent Income")) {
+					description = "Prorated Rent from "+startDate+" to "+endDate;
+					
+				}
+				if(chargeCode.equalsIgnoreCase("43070 - Resident Benefit Package Fee")) {
+					description = "Prorated RBP from "+startDate+" to "+endDate;
+				}
+				System.out.println(description);
 				//If amount is Captive Insurance, Need to add decimal values to the amount as it is not coming along with it
 				try {
 					if(!amount.contains("."))
@@ -97,7 +96,7 @@ public class PropertyWare_AutoCharges
 						System.out.println(description+" already available");
 						break;
 					}
-					if(chargeCode.contains("43070 - Resident Benefit")&&GetterAndSetterClass.getRBPNoChangeRequired()==true) {
+					if(chargeCode.contains("43070 - Resident Benefit")&& GetterAndSetterClass.getOldRBPAmount().replaceAll("[^0-9]", "").equalsIgnoreCase(amount.replaceAll("[^0-9]", ""))) {
 						availabilityCheck = true;
 						System.out.println("RBP is same and no change is required");
 						break;
@@ -106,12 +105,43 @@ public class PropertyWare_AutoCharges
 				}
 				catch(Exception e)
 				{}
-				if(availabilityCheck==false)
+ 				if(availabilityCheck==false)
 				{
-					addingAnAutoCharge(driver,chargeCode, amount, startDate,endDate, description);
+					if(addingAnAutoCharge(driver,chargeCode, amount, startDate,endDate, description)==false) {
+						saveError = true;
+						 failedReason = failedReason+","+"Something went wrong in adding "+description;
+				    	  GetterAndSetterClass.setFailedReason(failedReason);
+						  System.out.println("Something went wrong in adding auto charges");
+					}
 				}
 				
 			}
+			try {
+				if(saveError == false) {
+					actions.moveToElement(driver.findElement(Locators.renewalStatus)).build().perform();
+					Select select = new Select(driver.findElement(Locators.renewalStatus));
+					select.selectByVisibleText("RW-4a: CHARGE RENEWAL FEE - ANNUAL");
+				}
+				
+				
+			}
+			catch(Exception e) {
+				try {
+					if(saveError == false) {
+						Select select = new Select(driver.findElement(Locators.renewalStatus));
+						select.selectByValue("RW-4a%3A+CHARGE+RENEWAL+FEE+-+ANNUAL");
+					}
+					
+				}
+				catch(Exception e1) {
+					failedReason = failedReason+","+"Issue in changing renewal status";
+					GetterAndSetterClass.setFailedReason(failedReason);
+					GetterAndSetterClass.setStatusID(1);
+					e1.printStackTrace();
+				}
+				
+			}
+			Thread.sleep(1000);
 			 if(AppConfig.saveButtonOnAndOff==true)
 					actions.moveToElement(driver.findElement(Locators.saveLease)).click(driver.findElement(Locators.saveLease)).build().perform();
 				  else
@@ -137,7 +167,8 @@ public class PropertyWare_AutoCharges
 			Actions actions = new Actions(driver);
 			try
 			{
-			driver.findElement(Locators.newAutoCharge).click();
+				Thread.sleep(1000);
+				driver.findElement(Locators.newAutoCharge).click();
 			 
 		    //Charge Code
 			Select autoChargesDropdown = new Select(driver.findElement(Locators.accountDropdown));
@@ -150,6 +181,7 @@ public class PropertyWare_AutoCharges
 						
 			//click this to hide calendar UI
 			driver.findElement(Locators.autoCharge_refField).click();
+			Thread.sleep(500);
 			//Amount
 			driver.findElement(Locators.autoCharge_Amount).click();
 			actions.sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).build().perform();
@@ -166,10 +198,17 @@ public class PropertyWare_AutoCharges
 			
 			//Save or Cancel
 			if(AppConfig.saveButtonOnAndOff==false)
-			driver.findElement(Locators.autoCharge_CancelButton).click();
+				driver.findElement(Locators.autoCharge_CancelButton).click();
 			else 
-			driver.findElement(Locators.autoCharge_SaveButton).click();
-			Thread.sleep(2000);
+				driver.findElement(Locators.autoCharge_SaveButton).click();
+			 Thread.sleep(2000);
+			 try
+			 {
+				driver.switchTo().alert().accept();
+			 }
+			 catch(Exception e) {
+				 failedReason =  failedReason + "Unable to save";
+			 }
 			}
 			catch(Exception e)
 			{

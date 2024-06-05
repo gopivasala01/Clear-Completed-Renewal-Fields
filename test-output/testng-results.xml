@@ -2,47 +2,47 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-05-15T11:14:53 IST" name="RenewalProrationRentsUpdateSuite" finished-at="2024-05-15T11:16:26 IST" duration-ms="92251">
+  <suite started-at="2024-06-04T18:08:31 IST" name="RenewalProrationRentsUpdateSuite" finished-at="2024-06-04T18:10:11 IST" duration-ms="99936">
     <groups>
     </groups>
-    <test started-at="2024-05-15T11:14:53 IST" name="RenewalProrationRentsUpdateTest" finished-at="2024-05-15T11:16:26 IST" duration-ms="92251">
+    <test started-at="2024-06-04T18:08:31 IST" name="RenewalProrationRentsUpdateTest" finished-at="2024-06-04T18:10:11 IST" duration-ms="99936">
       <class name="mainPackage.RunnerClass">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-05-15T11:14:57 IST" name="setUp" finished-at="2024-05-15T11:15:13 IST" duration-ms="16489" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-06-04T18:08:35 IST" name="setUp" finished-at="2024-06-04T18:08:57 IST" duration-ms="22023" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testMethod(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-05-15T11:15:13 IST" name="testMethod" data-provider="testData" finished-at="2024-05-15T11:16:25 IST" duration-ms="72404" status="PASS">
+        <test-method signature="testMethod(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-06-04T18:08:57 IST" name="testMethod" data-provider="testData" finished-at="2024-06-04T18:10:11 IST" duration-ms="74109" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[299]]>
+                <![CDATA[9]]>
               </value>
             </param>
             <param index="1">
               <value>
-                <![CDATA[Georgia]]>
+                <![CDATA[Florida]]>
               </value>
             </param>
             <param index="2">
               <value>
-                <![CDATA[COUN724 - (724 Country Club Dr)_6516]]>
+                <![CDATA[SAWY285 - (BQ285 Sawyerwood Pl)]]>
               </value>
             </param>
             <param index="3">
               <value>
-                <![CDATA[Smith, J._8]]>
+                <![CDATA[Calderon Franco - Abello Saborio]]>
               </value>
             </param>
             <param index="4">
               <value>
-                <![CDATA[4613996544]]>
+                <![CDATA[4698832916]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testMethod -->
-        <test-method is-config="true" signature="sendMail()[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-05-15T11:16:26 IST" name="sendMail" finished-at="2024-05-15T11:16:36 IST" duration-ms="10116" status="PASS">
+        <test-method is-config="true" signature="sendMail()[pri:0, instance:mainPackage.RunnerClass@367ffa75]" started-at="2024-06-04T18:10:11 IST" name="sendMail" finished-at="2024-06-04T18:10:24 IST" duration-ms="12842" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- sendMail -->
