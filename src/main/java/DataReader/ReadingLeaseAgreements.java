@@ -285,7 +285,7 @@ public class ReadingLeaseAgreements {
 		   
 		   
 		    try {
-		    	proratedRent = dataExtractionClass.getValues(text, "Prorated Rent:^Tenant will pay Landlord@prorated rent,^Tenant will pay Landlord@Prorated Rent:^Tenant will pay Landlord");
+		    	proratedRent = dataExtractionClass.getValues(text, "Prorated Rent:^Tenant will pay Landlord@prorated rent,^Tenant will pay Landlord@Prorated Rent:^Tenant will pay Landlord $");
 				System.out.println("Prorated rent = "+ proratedRent);
 				GetterAndSetterClass.setProrateRent(proratedRent);
 		    }

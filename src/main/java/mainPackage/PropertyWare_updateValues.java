@@ -184,13 +184,28 @@ public class PropertyWare_updateValues
 						GetterAndSetterClass.setNewLeaseEndDate_ProrateRent(RunnerClass.lastDateOfTheMonth(GetterAndSetterClass.getStartDate()));
 				    	
 						if(!GetterAndSetterClass.getresidentBenefitsPackage().equalsIgnoreCase("Error")) {
-							GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getresidentBenefitsPackage()));
+							GetterAndSetterClass.setProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountNew(GetterAndSetterClass.getresidentBenefitsPackage()));
 						}
 						if(!priorMonthlyRent.equalsIgnoreCase("") ||!priorMonthlyRent.isEmpty() ||!priorMonthlyRent.equalsIgnoreCase("Error")) {
 							GetterAndSetterClass.setProrateMonthlyRent(ProrateAmountCalculator.prorateAmountOld(priorMonthlyRent));  
 						}
 					}
 				
+				}
+				try {
+					if(getRBPISChanged(driver)== true) {
+						if(!GetterAndSetterClass.getOldRBPAmount().equalsIgnoreCase("Error")) {
+							GetterAndSetterClass.setOldProrateResidentBenefitPackage(ProrateAmountCalculator.prorateAmountOld(GetterAndSetterClass.getOldRBPAmount()));
+						}
+						
+					}
+					Thread.sleep(1000);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+					 failedReason = failedReason+","+ "Issue in getting old RBP Value";
+					 GetterAndSetterClass.setFailedReason(failedReason);
+					 return false;
 				}
 				
 			}
@@ -211,20 +226,23 @@ public class PropertyWare_updateValues
 			try {
 				
 				String query ="";
-				for(int i=1;i<=4;i++)
+				for(int i=1;i<=5;i++)
 				{
 					switch(i)
 					{
 					case 1:
-						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getResidentBenefitsPackageChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateResidentBenefitPackage()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=14";
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getResidentBenefitsPackageChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getOldProrateResidentBenefitPackage()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=14";
 					    break;
-					case 2: 
-						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getProrateRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateRent()+"',StartDate='"+GetterAndSetterClass.getStartDate()+"',EndDate='"+GetterAndSetterClass.getNewLeaseEndDate_ProrateRent()+"',Flag = '' where ID=15";
+					case 2:
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getResidentBenefitsPackageChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateResidentBenefitPackage()+"',StartDate='"+GetterAndSetterClass.getStartDate()+"',EndDate='"+GetterAndSetterClass.getNewLeaseEndDate_ProrateRent()+"',Flag = '' where ID=18";
 					    break;
 					case 3: 
-						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateMonthlyRent()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=16";
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getProrateRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateRent()+"',StartDate='"+GetterAndSetterClass.getStartDate()+"',EndDate='"+GetterAndSetterClass.getNewLeaseEndDate_ProrateRent()+"',Flag = '' where ID=15";
 					    break;
 					case 4: 
+						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getProrateMonthlyRent()+"',StartDate='"+GetterAndSetterClass.getOldLeaseStartDate_ProrateRent()+"',EndDate='"+GetterAndSetterClass.getOldLeaseEndDate_ProrateRent()+"',Flag = '' where ID=16";
+					    break;
+					case 5: 
 						query = query+"\n Update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set ChargeCode = '"+AppConfig.getMonthlyRentChargeCode(company)+"',Amount = '"+GetterAndSetterClass.getprorateEscalationAmount()+"',StartDate='"+GetterAndSetterClass.getprorateEscalationStartDate()+"',EndDate='"+GetterAndSetterClass.getprorateEscalationEndDate()+"',Flag = '' where ID=17";
 					    break;  
 					}
@@ -253,30 +271,39 @@ public class PropertyWare_updateValues
 			String query1="";
 			if(GetterAndSetterClass.getRenewalStatusValue().toLowerCase().contains("close out coordinator review")) {
 				if(GetterAndSetterClass.getProrateRent().equalsIgnoreCase("Error")||GetterAndSetterClass.getProrateRent().equalsIgnoreCase("0.00")) {
-						getRBPISChanged(driver);
-						Thread.sleep(1000);
 						
-					
 					if(GetterAndSetterClass.getOldRBPAmount().equalsIgnoreCase("Error")) {
 						actions.moveToElement(driver.findElement(Locators.renewalStatus)).build().perform();
 						Select select = new Select(driver.findElement(Locators.renewalStatus));
 						Thread.sleep(500);
 						select.selectByVisibleText("RW-4a: CHARGE RENEWAL FEE - ANNUAL");
+						actions.moveToElement(driver.findElement(Locators.saveLease)).click(driver.findElement(Locators.saveLease)).build().perform();
 						System.out.println("Prorate Rent and RBP Error or 0");
 						failedReason =  failedReason+","+"Prorate Rent/RBP Error";
 						GetterAndSetterClass.setFailedReason(failedReason);
 						return false;
 					}
 					else {
-						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14)";
+						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14,18)";
 						DataBase.updateTable(query1);
 					}
-					actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
+					//actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
 					
 				}
 				else {
 					if(GetterAndSetterClass.getresidentBenefitsPackageAvailabilityCheckFlag()==true) {
-						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14,15,16)";
+						if(!GetterAndSetterClass.getOldRBPAmount().equalsIgnoreCase(GetterAndSetterClass.getresidentBenefitsPackage())) {
+							if(GetterAndSetterClass.getOldRBPAmount().equalsIgnoreCase("Error")) {
+								query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (15,16,18)";
+							}
+							else {
+								query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (14,15,16,18)";
+							}
+						}
+						else {
+							query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (15,16)";
+						}
+						
 					}
 					else {
 						query1 = "update automation.LeaseReneWalsAutoChargesConfiguration_"+SNo+" Set Flag = 1 where ID in (15,16)";
@@ -300,7 +327,7 @@ public class PropertyWare_updateValues
 			return true;
 		} 
 		
-		public static void getRBPISChanged(WebDriver driver) {
+		public static boolean getRBPISChanged(WebDriver driver) {
 			Actions actions = new Actions(driver);
 			JavascriptExecutor js = (JavascriptExecutor)driver;
 			try {
@@ -309,7 +336,7 @@ public class PropertyWare_updateValues
 				driver.findElement(Locators.summaryEditButton).click();
 				Thread.sleep(2000);
 				//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-				actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
+ 				actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
 				boolean newChargeChanges = false;
 				List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
 				List<WebElement> startDates = driver.findElements(Locators.autoCharge_List_StartDates);
@@ -325,14 +352,18 @@ public class PropertyWare_updateValues
 				    	newChargeChanges = true;
 				        continue; // No need to continue once the condition is met
 				    }
-				    if(newChargeChanges == true && autoChargeText.contains("43070 - Resident Benefit") && GetterAndSetterClass.getlastDayOfTheStartDate().trim().equalsIgnoreCase(endDateText.trim())) {
-				    	GetterAndSetterClass.setOldRBPAmount(amount);
+				    if(newChargeChanges == true && autoChargeText.contains("43070 - Resident Benefit") && ( GetterAndSetterClass.getOldLeaseEndDate_ProrateRent().equalsIgnoreCase(endDateText.trim()))) { //GetterAndSetterClass.getlastDayOfTheStartDate().trim().equalsIgnoreCase(endDateText.trim()) ||
+				    	GetterAndSetterClass.setOldRBPAmount(amount.replace("$", ""));
+				    	//GetterAndSetterClass.setOldRBPAmount("44.95");
+				    	break;
 				    }
 				}
 			}
 			catch(Exception e) {
-				
+				return false;
 			}
+			actions.moveToElement(driver.findElement(Locators.cancelLease)).click(driver.findElement(Locators.cancelLease)).build().perform();
+			return true;
 		}
 		
 		

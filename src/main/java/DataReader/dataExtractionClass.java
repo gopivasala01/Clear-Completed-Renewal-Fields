@@ -29,7 +29,7 @@ public class dataExtractionClass {
             String subStringValue = data[i].split("\\^")[0].toLowerCase();
             String priorText = data[i].split("\\^")[1].toLowerCase();
             try {
-            	 String patternString = priorText + "\\s*\\$?\\s*([0-9]+(?:,[0-9]{1,3})*(?:\\.[0-9]{1,2})?)?";
+            	 String patternString = priorText + "\\s*\\$?\\s*\\$?\\s*([0-9]+(?:,[0-9]{1,3})*(?:\\.[0-9]{1,2})?)?";
             	 String modifiedtext = text.substring(text.indexOf(subStringValue));
             	 // Constructing regex pattern to match the amount
             	 Pattern pattern = Pattern.compile(patternString);

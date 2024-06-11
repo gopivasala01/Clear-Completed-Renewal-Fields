@@ -25,7 +25,7 @@ public class PropertyWare_AutoCharges
 			driver.findElement(Locators.summaryTab).click();
 			driver.findElement(Locators.summaryEditButton).click();
 			Thread.sleep(2000);
-			js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			actions.moveToElement(driver.findElement(Locators.newAutoCharge)).build().perform();
 			
 			List<WebElement> existingAutoCharges = driver.findElements(Locators.autoCharge_List);
@@ -90,17 +90,17 @@ public class PropertyWare_AutoCharges
 					}
 					catch(Exception e)
 					{}*/
-					if(chargeCode.contains(autoChargeCodes.replaceAll(".", ""))&&autoChargeAmount.replaceAll("[^0-9]", "").equals(amount.replaceAll("[^0-9]", ""))||amount.trim().equals("0.00"))//&&(startDate.equals(autoChargeStartDate)||autoChargeEndDate.trim().equals("")))
+					if(chargeCode.contains(autoChargeCodes.replaceAll(".", "")) && autoChargeAmount.replaceAll("[^0-9]", "").equals(amount.replaceAll("[^0-9]", "")))//&&(startDate.equals(autoChargeStartDate)||autoChargeEndDate.trim().equals("")))
 					{
 						availabilityCheck = true;
 						System.out.println(description+" already available");
 						break;
 					}
-					if(chargeCode.contains("43070 - Resident Benefit")&& GetterAndSetterClass.getOldRBPAmount().replaceAll("[^0-9]", "").equalsIgnoreCase(amount.replaceAll("[^0-9]", ""))) {
+				/*	if(chargeCode.contains("43070 - Resident Benefit")&& GetterAndSetterClass.getOldRBPAmount().replaceAll("[^0-9]", "").equalsIgnoreCase(amount.replaceAll("[^0-9]", ""))) {
 						availabilityCheck = true;
 						System.out.println("RBP is same and no change is required");
 						break;
-					}
+					} */
 				}
 				}
 				catch(Exception e)
@@ -184,7 +184,9 @@ public class PropertyWare_AutoCharges
 			Thread.sleep(500);
 			//Amount
 			driver.findElement(Locators.autoCharge_Amount).click();
-			actions.sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).build().perform();
+			Thread.sleep(500);
+			driver.findElement(Locators.autoCharge_Amount).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+			//actions.sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).sendKeys(Keys.BACK_SPACE).build().perform();
 			driver.findElement(Locators.autoCharge_Amount).sendKeys(amount);
 			Thread.sleep(500);
 						

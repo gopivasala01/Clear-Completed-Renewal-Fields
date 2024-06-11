@@ -55,7 +55,7 @@ public class GetterAndSetterClass {
 	private static ThreadLocal<String> prorateResidentBenefitPackageThreadLocal = new ThreadLocal<>();  //For other portfolios, it should be added as second full month in Auto Charges 
 	private static ThreadLocal<String> prorateMonthlyRentThreadLocal = new ThreadLocal<>();
 	private static ThreadLocal<String> renewalStatusValueThreadLocal = new ThreadLocal<>();
-	
+	private static ThreadLocal<String> oldProrateResidentBenefitPackageThreadLocal = new ThreadLocal<>(); 
 	
 	private static ThreadLocal<ArrayList<String>> increasedRentAmounts = ThreadLocal.withInitial(ArrayList::new);
 	private static ThreadLocal<ArrayList<String>> increasedRentDates = ThreadLocal.withInitial(ArrayList::new);
@@ -456,6 +456,19 @@ public class GetterAndSetterClass {
 	public static void setProrateResidentBenefitPackage(String ProrateResidentBenefitPackage) {
 		prorateResidentBenefitPackageThreadLocal.set(ProrateResidentBenefitPackage);
 	}
+	public static String getOldProrateResidentBenefitPackage() {
+		if(oldProrateResidentBenefitPackageThreadLocal.get()==null)
+			return "Error";
+		else
+		 return oldProrateResidentBenefitPackageThreadLocal.get();
+	}
+
+	public static void setOldProrateResidentBenefitPackage(String oldProrateResidentBenefitPackage) {
+		oldProrateResidentBenefitPackageThreadLocal.set(oldProrateResidentBenefitPackage);
+	}
+	
+	
+	
 	public static String getProrateMonthlyRent() {
 		if(prorateMonthlyRentThreadLocal.get()==null)
 			return "Error";
