@@ -90,7 +90,7 @@ public class PropertyWare_AutoCharges
 					}
 					catch(Exception e)
 					{}*/
-					if(chargeCode.contains(autoChargeCodes.replaceAll(".", "")) && autoChargeAmount.replaceAll("[^0-9]", "").equals(amount.replaceAll("[^0-9]", "")))//&&(startDate.equals(autoChargeStartDate)||autoChargeEndDate.trim().equals("")))
+					if(chargeCode.trim().contains(autoChargeCodes.trim().replaceAll(".", "")) && autoChargeAmount.trim().replaceAll("[^0-9]", "").equals(amount.trim().replaceAll("[^0-9]", "")))//&&(startDate.equals(autoChargeStartDate)||autoChargeEndDate.trim().equals("")))
 					{
 						availabilityCheck = true;
 						System.out.println(description+" already available");
