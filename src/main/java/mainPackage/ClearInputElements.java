@@ -83,7 +83,7 @@ public class ClearInputElements {
 				System.out.println("--------------------");
 
 			} */
-	//		if(GetterAndSetterClass.getRenewalStatusValue().contains("RENEWAL/NTV COMPLETED")) {
+			if(GetterAndSetterClass.getRenewalStatusValue().contains("RENEWAL/NTV COMPLETED")) {
 				try {
 					actions.moveToElement(driver.findElement(Locators.futureStartDate)).build().perform();
 					driver.findElement(Locators.futureStartDate).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
@@ -281,13 +281,13 @@ public class ClearInputElements {
 					//return false;
 				}
 				
-		//	}
-		/*	else {
+			}
+			else {
 				System.out.println("Renewal Status is not  Renewal/NTV Completed");
 				failedReason =  failedReason+","+"Renewal Status is "+GetterAndSetterClass.getRenewalStatusValue();
 				GetterAndSetterClass.setFailedReason(failedReason);
 				return false;
-			} */
+			} 
 			
 
 		} catch (Exception e) {
