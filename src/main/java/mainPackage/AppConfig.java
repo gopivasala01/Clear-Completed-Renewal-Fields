@@ -12,11 +12,11 @@ public class AppConfig
 		public static String pdfImage = "C:\\SantoshMurthyP\\Tessaract Images\\";
 		
 	
-	    public static String pendingRenewalLeases = "Select ID,Company,Building,LeaseName,LeaseEntityID from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE() AS DATE)";//and AutomationStatus = 'Pending' ";
+	    public static String pendingRenewalLeases = "select ID,Company,Building,LeaseName,LeaseEntityID from Automation.ClearCompletedLeaseRenewalsFields where AutomationStatus='pending'";//and AutomationStatus = 'Pending' ";
 			   //"Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Florida'  order by id asc";
 	   //public static String lastMonthLeases1 = "Select  Company,buildingabbreviation,LeaseName from LeaseFact_dashboard where DATEDIFF(month, StartDate, GETDATE()) = 1 and Company ='Alabama'  order by id asc";
 		//public static String lastMonthLeases = "Select  Company,buildingabbreviation,LeaseName from [Automation].[leaseAuditAutomation] where notes = 'Values did not match'";
-	    public static String getBuildingsWithStatusforCurrentDay = "Select ID,Company,Building,LeaseName,LeaseEntityID,AutomationStatus,AutomationNotes from Automation.RenewalProrationRentsUpdate WHERE CAST(AsOFDate AS DATE) = CAST(GETDATE() AS DATE)";
+	    public static String getBuildingsWithStatusforCurrentDay = "Select ID,Company,Building,LeaseName,LeaseEntityID,AutomationStatus,AutomationNotes from Automation.ClearCompletedLeaseRenewalsFields where CAST(AutomationCompletionDate AS DATE) = CAST(GETDATE() AS DATE)";
 	    
 	    public static String connectionUrl = "jdbc:sqlserver://azrsrv001.database.windows.net;databaseName=HomeRiverDB;user=service_sql02;password=xzqcoK7T;encrypt=true;trustServerCertificate=true;";
 	    public static String downloadFilePath = "C:\\SantoshMurthyP\\Lease Audit Automation";
@@ -34,7 +34,7 @@ public class AppConfig
 		   public static String toEmail ="gopi.v@beetlerim.com,naveen.p@beetlerim.com";//"samay@homeriver.com"
 		   public static String CCEmail = "naveen.p@beetlerim.com";
 		   
-		   public static String mailSubject = "Renewal Proration Rents Update -  ";
+		   public static String mailSubject = "Clear Completed Renewal Fields Update -  ";
 		   
 		   public static String excelFileLocation = "C:\\SantoshMurthyP\\Excel File";
 		   

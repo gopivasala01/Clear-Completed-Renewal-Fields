@@ -15,7 +15,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import DataReader.ReadingLeaseAgreements;
 
 public class PropertyWare {
 
@@ -172,126 +171,7 @@ public class PropertyWare {
 		return true;
 	}
 
-	public static boolean downloadLeaseAgreement(WebDriver driver, String building, String ownerName, String company)
-			throws Exception {
-		String failedReason = "";
-		Actions actions = new Actions(driver);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		if (company.equalsIgnoreCase("Arizona")) {
-			// City from Building Address for Arizona rent code
-			try {
-				driver.findElement(Locators.buildingLinkInLeasePage).click();
-				PropertyWare.intermittentPopUp(driver);
-				String buildingAddress = driver.findElement(Locators.buildingAddress).getText();
-				String[] lines = buildingAddress.split("\\n");
-				String city = lines[1].split(" ")[0].trim();
-				GetterAndSetterClass.setArizonaCityFromBuildingAddress(city);
-				System.out.println("Building Address = " + buildingAddress);
-				System.out.println("Building City = " + city);
-				driver.navigate().back();
-			} catch (Exception e) {
-			}
-		}
-
-		try {
-
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-			js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-
-			// Start and End Dates in Property Ware
-			try {
-				GetterAndSetterClass.setStartDateInPW(driver.findElement(Locators.leaseStartDate_PW).getText());
-				System.out.println("Lease Start Date in PW = " + GetterAndSetterClass.getStartDateInPW());
-				GetterAndSetterClass.setEndDateInPW(driver.findElement(Locators.leaseEndDate_PW).getText());
-				System.out.println("Lease End Date in PW = " + GetterAndSetterClass.getEndDateInPW());
-			} catch (Exception e) {
-			}
-
-			driver.findElement(Locators.notesAndDocs).click();
-			int k = 0;
-			while (k < 2) {
-				try {
-					List<WebElement> documents = driver.findElements(Locators.documentsList);
-					boolean checkLeaseAgreementAvailable = false;
-					String filename = null;
-					for (int i = 0; i < documents.size(); i++) {
-						for (int j = 0; j < AppConfig.LeaseAgreementFileNames.length; j++) {
-							if ((documents.get(i).getText().trim().startsWith(AppConfig.LeaseAgreementFileNames[j]) || documents.get(i).getText().trim().contains("Renewal_Lease") || documents.get(i).getText().trim().contains("Renewal Lease") || (documents.get(i).getText().trim().startsWith("IAG_") && documents.get(i).getText().trim().contains("Renewal_")))
-									&& !documents.get(i).getText().trim().contains("Termination")
-									&& !documents.get(i).getText().trim().contains("_Mod")
-									&& !documents.get(i).getText().trim().contains("_MOD")
-									&& !documents.get(i).getText().trim().contains("Renewal_Offer")&&!documents.get(i).getText().trim().contains("Renewal Offer"))// &&documents.get(i).getText().contains(AppConfig.getCompanyCode(RunnerClass.company)))
-							{
-								documents.get(i).click();
-								filename = documents.get(i).getText();
-								GetterAndSetterClass.setFileName(filename);
-								checkLeaseAgreementAvailable = true;
-								PropertyWare.waitUntilFileIsDownloaded(filename);
-								break;
-							}
-						}
-						if (checkLeaseAgreementAvailable == true)
-							break;
-					}
-
-					if (checkLeaseAgreementAvailable == false) {
-						System.out.println("Lease Agreement is not available");
-						failedReason = failedReason + "," + "Lease Agreement is not available";
-						GetterAndSetterClass.setFailedReason(failedReason);
-						return false;
-					}
-					Thread.sleep(2000);
-					if (ReadingLeaseAgreements.dataRead(GetterAndSetterClass.getFileName()) == false) {
-						return false;
-					}
-
-					return true;
-				} catch (Exception e) {
-					driver.navigate().refresh();
-					continue;
-				}
-
-			}
-		} catch (Exception e) {
-			System.out.println("Unable to download Lease Agreement");
-			failedReason = failedReason + "," + "Unable to download Lease Agreement";
-			GetterAndSetterClass.setFailedReason(failedReason);
-			return false;
-		}
-		return true;
-
-	}
-
-	public static void waitUntilFileIsDownloaded(String filename) throws Exception {
-		try {
-			Thread.sleep(10000);
-			if (RunnerClass.getLastModified(filename) != null) {
-				while (true) {
-					File file = RunnerClass.getLastModified(filename);
-					if (file.getName().endsWith(".crdownload")) {
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e1) {
-
-							e1.printStackTrace();
-							// Handle the InterruptedException if needed
-						}
-					} else {
-						// Break the loop if the file name does not end with ".crdownload"
-						break;
-					}
-				}
-			}
-			File file = RunnerClass.getLastModified(filename);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Thread.sleep(10000);
-		}
-	}
 
 	public static boolean selectBuilding(WebDriver driver, String company, String ownerName, String LeaseEntityID) {
 		String failedReason = "";

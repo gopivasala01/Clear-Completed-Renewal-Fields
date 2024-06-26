@@ -67,73 +67,39 @@ public class Locators
     public static By autoCharge_Amount = By.name("charge.amountAsString");
     public static By autoCharge_CancelButton = By.xpath("//*[@id='editAutoChargeForm']/descendant::div[4]/input[2]");
     public static By autoCharge_SaveButton = By.xpath("(//*[@class='primaryButtons'])[3]/input[1]");
-    public static By autoCharge_refField = By.name("charge.refNo");
-    public static By earlyTermFee2x = By.xpath("//*[text()='Early Term Fee 2x Rent?']/following::select[1]");
-    public static By clientType = By.xpath("//*[text()='Client Type']//following::select[1]");
-    public static By earlyTermFee2x_textbox1 = By.xpath("//*[text()='Early Term Fee 2x Rent?']/following::input[1]");
-    public static By earlyTermFee2x_2 = By.xpath("//*[text()='Early Term Fee 2x Rent??']/following::select[1]");
-    public static By earlyTermFee2x_textbox2 = By.xpath("//*[text()='Early Term Fee 2x Rent??']/following::input[1]");
-    public static By earlyTermFee2x_textBox = By.xpath("//*[text()='Early Term Fee 2x Rent?']/following::input[1]");
-    public static By enrolledInFilterEasy = By.xpath("//*[text()='Enrolled in FilterEasy rev']/following::select[1]");
-    public static By enrolledInFilterEasy_List = By.xpath("//*[text()='Enrolled in FilterEasy rev']/following::select[1]");
-    public static By RBPOptOut = By.xpath("//*[text()='RBP opt out']/following::Select[1]");
-    public static By enrolledInRBPForPMUse = By.xpath("//*[contains(text(),'Enrolled in RBP')]/following::Select[1]");
-    public static By earlyTermination_List = By.xpath("//*[text()='Early Term Fee 2x Rent?']/following::select[1]");
-    public static By earlyTermination_List_2 = By.xpath("//*[text()='Early Term Fee 2x Rent??']/following::select[1]");
-    public static By needsNewLease = By.xpath("//*[text()='Needs New Lease']/following::select[1]");
-    public static By needsNewLease_List = By.xpath("//*[text()='Needs New Lease']/following::select[1]");
-    public static By leaseOccupants = By.xpath("//*[text()='Lease Occupants']/following::input[1]");
-    public static By otherOccupants = By.xpath("//*[text()='Other Occupants']/following::input[1]");
-    public static By pet1Type = By.xpath("//*[text()='Pet 1 Type']/following::input[1]");
-    public static By pet1Breed = By.xpath("//*[text()='Pet 1 Breed']/following::input[1]");
-    public static By pet1Weight = By.xpath("//*[text()='Pet 1 Weight']/following::input[1]");
+
+
     
-    public static By pet2Type = By.xpath("//*[text()='Pet 2 Type']/following::input[1]");
-    public static By pet2Breed = By.xpath("//*[text()='Pet 2 Breed']/following::input[1]");
-    public static By pet2Weight = By.xpath("//*[text()='Pet 2 Weight']/following::input[1]");
+    public static By renewalFollowUpNotes = By.xpath("//*[contains(text(),'Renewal Follow-Up Notes')]/following-sibling::td/textarea");
+    public static By futureStartDate = By.xpath("//*[contains(text(),'Future Start Date')]/following-sibling::td/input");
+    public static By futureRentAmountOption1 = By.xpath("//*[contains(text(),'Future Rent Amount Option 1')]/following-sibling::td/input");
+    public static By futureLeaseTermOption1 = By.xpath("//*[contains(text(),'Future Lease Term Option 1')]/following-sibling::td/input");
+    public static By futureEndDateOption1 = By.xpath("//*[contains(text(),'Future End Date Option 1')]/following-sibling::td/input");
+    public static By futureMonthToMonthRate = By.xpath("//*[contains(text(),'Future Month to Month Rate')]/following-sibling::td/input");
+    public static By futureRentTaxAmountOption1 = By.xpath("//*[contains(text(),'Future Rent Tax Amount Option 1')]/following-sibling::td/input");
+    public static By futureAdminCostOption1 = By.xpath("//*[contains(text(),'Future Admin Cost Option 1')]/following-sibling::td/input");
     
-    public static By pet3Type = By.xpath("//*[text()='Pet 3 Type']/following::input[1]");
-    public static By pet3Breed = By.xpath("//*[text()='Pet 3 Breed']/following::input[1]");
-    public static By pet3Weight = By.xpath("//*[text()='Pet 3 Weight']/following::input[1]");
     
-    public static By serviceAnimalType = By.xpath("//*[text()='Pet 2 Type']/following::input[1]");
-    public static By serviceAnimalBreed = By.xpath("//*[text()='Pet 2 Breed']/following::input[1]");
-    public static By serviceAnimalWeight = By.xpath("//*[text()='Pet 2 Weight']/following::input[1]");
-    public static By petAmount = By.xpath("//*[text()='Pet Rent Amount']/following::input[1]");
-    public static By petAmount2 = By.xpath("//*[text()='Pet Rent Amount']/following::input[1]");
-    public static By petDepositAmount = By.xpath("//*[text()='Pet Deposit Amount']/following::input[1]");
-    public static By tenantOneTimePetFee = By.xpath("//*[contains(text(),'ime Pet Fee')]/following::input[1]");
-    public static By tenantOneTimePetFee2 = By.xpath("//*[text()='Tenant One-Time Pet Fee']/following::input[1]");
-    public static By petSpecialProvisions = By.xpath("//*[text()='Pet Special Provisions']/following::input[1]");
-    public static By lateFeeDueDay = By.name("entity.lateFee.dueDay");
-    public static By initialFee = By.name("entity.lateFee.initial");
-    public static By perDayFee = By.xpath("(//*[text()='Per Day Fee'])[2]/following::input[1]");
-    public static By initialFeeDropdown = By.name("entity.lateFee.feeTypeMethodInitial");
-    public static By perDayFeeDropdown = By.name("entity.lateFee.feeTypeMethod");
-    public static By maximumYesNoDropdown = By.name("entity.lateFee.limitAmount");
-    public static By maximumDropdown2 = By.name("entity.lateFee.limitTypeMethod");
-    public static By maximumDatField = By.name("entity.lateFee.maxAmountAsString");
-    public static By saveLease = By.xpath("(//*[@class='primaryButtons'])[2]/input[1]");
-    public static By initialMonthlyRent = By.xpath("//*[text()='Initial Monthly Rent']/following::input[1]");
-    public static By initialPetRentAmount = By.xpath("//*[text()='Initial Pet Rent Amount']/following::input[1]");
-    public static By petRentAmount = By.xpath("//*[text()='Pet Rent Amount']/following::input[1]");
-    public static By currentMonthlyRent = By.xpath("//*[text()='Current Monthly Rent']/following::input[1]");
-    public static By somethingWrongInSavingCharge = By.xpath("//*[text()='You must correct the following:']");
-    public static By monthlyRentAmount = By.xpath("//*[text()='Monthly Rent Amount']/following::input[1]");
+    public static By futureStartDateText = By.xpath("//*[contains(text(),'Future Start Date')]");
+    public static By futureEndDateOption1Text = By.xpath("//*[contains(text(),'Future End Date Option 1')]");
     
-    public static By lateFeeType = By.name("entity.lateFee.feeType");
-    public static By flatFee = By.xpath("//*[text()='Flat Fee']/following::input[1]");
-    public static By lateFeePercentage =By.xpath("//*[text()='Percentage']/following::input[1]"); 
+    public static By attachNote = By.xpath("//input[@value='Attach Note']");
+    public static By noteBody  = By.xpath("//*[@name='note.body']");
+    public static By noteDate  = By.xpath("//*[@name='note.dateAsString']");
+    public static By noteSubject = By.xpath("//*[@name='note.subject']");
+    public static By notePrivate = By.xpath("//*[@name='note.private']");
+    public static By noteSave = By.xpath("//*[@class='primaryButtons']/input[@value='Save']");
+    public static By noteCancel = By.xpath("//*[@class='primaryButtons']/input[@value='Cancel']");
+ 
     
-    public static By residentBenefitsPackage =By.xpath("//*[contains(text(),'Enrolled in RBP')]/following::select[1]"); //By.xpath("//*[text()='RBP Enrollment Complete *For SN Use Only*']/preceding::th[1]/following::select[1]");
-    
+   
+    public static By saveLease = By.xpath("(//*[@class='primaryButtons'])[2]/input[1]"); 
     public static By cancelLease = By.xpath("(//*[@class='primaryButtons'])[2]/input[2]");
     
     public static By advancedSearch = By.linkText("Advanced Search >>");
     public static By advancedSearch_buildingsSection = By.id("searchResultTable_buildings");
     public static By advancedSearch_buildingAddresses = By.xpath("//*[@id='searchResultTable_buildings']/following::table[1]/tbody/tr/td[2]/a");
     
-    public static By baseRent = By.xpath("//*[text()='Base Rent']/following::input[1]");
     public static By buildingAddress = By.xpath("//*[@title='This address has been validated']/following::td[1]");
     
     public static By captiveInsurence = By.xpath("//*[text()='Captive Insurance']/following::select[1]");

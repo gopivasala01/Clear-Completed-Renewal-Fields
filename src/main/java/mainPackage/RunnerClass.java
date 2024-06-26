@@ -103,7 +103,7 @@ public class RunnerClass {
 	public void testMethod(String SNo,String company, String buildingAbbreviation, String ownerName,String LeaseEntityID) throws Exception {
 		System.out.println(" Building -- " + buildingAbbreviation + "  Company -- "+ company);
 		int statusID = 0;
-		GetterAndSetterClass.setStatusID(statusID);
+		//GetterAndSetterClass.setStatusID(statusID);
 		String failedReason = "";
 		String completeBuildingAbbreviation="";
 		ChromeDriver driver = driverThreadLocal.get();
@@ -150,56 +150,30 @@ public class RunnerClass {
 			try {
 				// Search building in property Ware
 				if (PropertyWare.selectBuilding(driver,company, ownerName,LeaseEntityID) == true) {
-					RunnerClass.processAfterBuildingIsSelected(driver,SNo,company, buildingAbbreviation, ownerName,failedReason);
-				} else if(GetterAndSetterClass.getleaseStatus() == true) {
-					if ((PropertyWare.searchBuilding(driver,company, buildingAbbreviation,completeBuildingAbbreviation) == true)) {
-						if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName,company) == true) {
-							if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
-								PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
-								
-
-								// Update Completed Status
-								failedReason = GetterAndSetterClass.getFailedReason();
-								if (failedReason == null || failedReason.equalsIgnoreCase(""))
-									failedReason = "";
-								else if (failedReason.charAt(0) == ',')
-									failedReason = failedReason.substring(1);
-								String updateSuccessStatus = "";
-								if (statusID == 0)
-									updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
-											+ failedReason + "' where ID ="+ SNo ;
-								else
-									updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
-											+ failedReason + "' where ID ="+ SNo ;
-								DataBase.updateTable(updateSuccessStatus);
-
-							} else {
-								failedReason = GetterAndSetterClass.getFailedReason();
-								if (failedReason == null || failedReason.equalsIgnoreCase(""))
-									failedReason = "";
-								else if (failedReason.charAt(0) == ',')
-									failedReason = failedReason.substring(1);
-								String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
-										+ failedReason + "' where ID ="+ SNo ;
-								DataBase.updateTable(updateSuccessStatus);
-
-							}
-
-						} else {
-							if (PropertyWare.selectBuilding(driver,company, completeBuildingAbbreviation,LeaseEntityID) == true) {
-								RunnerClass.processAfterBuildingIsSelected(driver,SNo,company, buildingAbbreviation, ownerName,failedReason);
-							} else {
-								failedReason = GetterAndSetterClass.getFailedReason();
-								if (failedReason == null || failedReason.equalsIgnoreCase(""))
-									failedReason = "";
-								else if (failedReason.charAt(0) == ',')
-									failedReason = failedReason.substring(1);
-								String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
-										+ failedReason + "' where ID ="+ SNo ;
-								DataBase.updateTable(updateSuccessStatus);
-							}
-						}
+					
+					if(ClearInputElements.clearAllFields(driver,company)==true) {
+						failedReason = GetterAndSetterClass.getFailedReason();
+						if (failedReason == null || failedReason.equalsIgnoreCase(""))
+							failedReason = "";
+						else if (failedReason.charAt(0) == ',')
+							failedReason = failedReason.substring(1);
+						String updateSuccessStatus = "Update [Automation].ClearCompletedLeaseRenewalsFields Set AutomationStatus ='Completed',AutomationCompletionDate= getDate(),AutomationNotes='"
+									+ failedReason + "' where ID ="+ SNo ;
+						
+						DataBase.updateTable(updateSuccessStatus);
 					}
+					else {
+						failedReason = GetterAndSetterClass.getFailedReason();
+						if (failedReason == null || failedReason.equalsIgnoreCase(""))
+							failedReason = "";
+						else if (failedReason.charAt(0) == ',')
+							failedReason = failedReason.substring(1);
+						String updateSuccessStatus = "Update [Automation].ClearCompletedLeaseRenewalsFields Set AutomationStatus ='Failed',AutomationCompletionDate= getDate(),AutomationNotes='"
+								+ failedReason + "' where ID ="+ SNo ;
+						DataBase.updateTable(updateSuccessStatus);
+					}
+					
+					
 				}
 				else {
 					failedReason = GetterAndSetterClass.getFailedReason();
@@ -207,7 +181,7 @@ public class RunnerClass {
 						failedReason = "";
 					else if (failedReason.charAt(0) == ',')
 						failedReason = failedReason.substring(1);
-					String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed',AutomationNotes='"
+					String updateSuccessStatus = "Update [Automation].ClearCompletedLeaseRenewalsFields Set AutomationStatus ='Failed',AutomationCompletionDate= getDate(),AutomationNotes='"
 							+ failedReason + "' where ID ="+ SNo ;
 					DataBase.updateTable(updateSuccessStatus);
 				}
@@ -255,8 +229,8 @@ public class RunnerClass {
 				setautoCharges(null);
 				try
 				{
-				String query = "drop table if exists automation.LeaseReneWalsAutoChargesConfiguration_"+SNo;
-				DataBase.updateTable(query);
+			//	String query = "drop table if exists automation.LeaseReneWalsAutoChargesConfiguration_"+SNo;
+			//	DataBase.updateTable(query);
 				}
 				catch(Exception e) {}
 				driver.quit();
@@ -493,49 +467,6 @@ public class RunnerClass {
 		return bd.doubleValue();
 	}
 
-	public static void processAfterBuildingIsSelected(WebDriver driver,String SNo,String company, String buildingAbbreviation, String ownerName,String failedReason)
-			throws Exception {
-		if (PropertyWare.downloadLeaseAgreement(driver,buildingAbbreviation, ownerName,company) == true) {
-			if (PropertyWare_updateValues.configureValues(driver,company,buildingAbbreviation,SNo) == true) {
-				PropertyWare_AutoCharges.addingAutoCharges(driver,buildingAbbreviation,SNo);
-			
-				
-				failedReason = GetterAndSetterClass.getFailedReason();
-				// Update Completed Status
-				if (failedReason == null||failedReason.equals(""))
-					failedReason = "";
-				else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
-					failedReason = failedReason.substring(1);
-				String updateSuccessStatus = "";
-				if (GetterAndSetterClass.getStatusID() == 0)
-					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Completed',AutomationNotes='"
-							+ failedReason + "' where ID ="+ SNo ;
-				else
-					updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Review',AutomationNotes='"
-							+ failedReason + "' where ID ="+ SNo ;
-				DataBase.updateTable(updateSuccessStatus);
-			} else {
-				failedReason = GetterAndSetterClass.getFailedReason();
-				if (failedReason == null||failedReason.equals(""))
-					failedReason = "";
-				else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
-					failedReason = failedReason.substring(1);
-				String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
-						+ failedReason + "' where ID ="+ SNo ;
-				DataBase.updateTable(updateSuccessStatus);
-			}
-
-		} else {
-			failedReason = GetterAndSetterClass.getFailedReason();
-			if (failedReason == null||failedReason.equals(""))
-				failedReason = "";
-			else if (GetterAndSetterClass.getFailedReason().charAt(0) == ',')
-				failedReason = failedReason.substring(1);
-			String updateSuccessStatus = "Update [Automation].RenewalProrationRentsUpdate Set AutomationStatus ='Failed', AutomationNotes='"
-					+ failedReason + "' where ID ="+ SNo ;
-			DataBase.updateTable(updateSuccessStatus);
-		}
-	}
 	
 	
 	public static int getDaysInMonth(String dateStr) {

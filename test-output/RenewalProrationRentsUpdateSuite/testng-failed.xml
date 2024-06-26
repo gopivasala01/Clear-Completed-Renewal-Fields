@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite parallel="tests" data-provider-thread-count="1" name="Failed suite [RenewalProrationRentsUpdateSuite]" guice-stage="DEVELOPMENT">
+<suite parallel="tests" data-provider-thread-count="5" name="Failed suite [RenewalProrationRentsUpdateSuite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" parallel="tests" name="RenewalProrationRentsUpdateTest(failed)">
     <classes>
       <class name="mainPackage.RunnerClass">
         <methods>
+          <include name="sendMail"/>
           <include name="setUp"/>
           <include name="testMethod"/>
         </methods>

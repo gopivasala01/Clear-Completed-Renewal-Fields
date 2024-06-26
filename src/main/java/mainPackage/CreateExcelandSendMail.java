@@ -37,7 +37,7 @@ public class CreateExcelandSendMail  {
         String filename ;
 		try   
 		{  
-		filename = AppConfig.excelFileLocation+"\\ProrateRent_"+date+".xlsx";  
+		filename = AppConfig.excelFileLocation+"\\Clear Completed Renewal Fields_"+date+".xlsx";  
 		File file = new File(filename);
 		//if file exists, delete and re create it
 		if(file.exists())
